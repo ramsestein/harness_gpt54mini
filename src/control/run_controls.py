@@ -31,10 +31,10 @@ if __package__ in (None, ""):  # executed as a script, e.g. ``python src/control
 
 from harness import run as harness_run  # noqa: E402
 from src import config, dataset, leaderboard  # noqa: E402
-from src.control import baselines, retrieval_majority, sim_normality  # noqa: E402
+from src.control import baselines, persistence, retrieval_majority, sim_normality  # noqa: E402
 
 #: Controls a bare invocation runs: the cheap ones (no corpus, no simulation).
-DEFAULT_NAMES = list(baselines.BASELINE_NAMES)
+DEFAULT_NAMES = [*baselines.BASELINE_NAMES, persistence.NAME]
 
 #: Controls that need something extra, so they are opt-in through ``--only``:
 #: ``retrieval_majority`` loads the few-shot index (175 MB),
@@ -59,6 +59,8 @@ def selected_names(only=None):
 
 def control_strategy(name, seed=0, **options):
     """Build one control by name, with the options that control accepts."""
+    if name == persistence.NAME:
+        return persistence.PersistenceStrategy(**options)
     if name == sim_normality.NAME:
         return sim_normality.SimNormalityStrategy(**options)
     if name == retrieval_majority.NAME:

@@ -15,11 +15,41 @@ Contract
 ``confusion_matrix(preds, refs) -> dict[(pred, ref)] -> int``
 ``per_difficulty(preds, refs, difficulties) -> dict[str, dict]``
     each group -> ``{"n": int, "accuracy": float}``
+``per_class_recall(preds, refs, labels) -> dict[label, float]``
+``balanced_accuracy(preds, refs, labels) -> float``
+    Mean per-class recall: every class counts the same, whatever its prevalence. On a
+    corpus where ``no_action`` and ``reduce_opioid`` are ~27 % each, accuracy alone hides
+    a strategy that simply leans on the majority class.
+``macro_f1(preds, refs, labels) -> float``
+``cohen_kappa(preds, refs, labels) -> float``
+    Agreement above what chance alone would give.
+``cluster_bootstrap_ci(cases, hits, replicates, seed) -> (low, high)``
+    Interval of the mean of ``hits`` resampling whole **cases**: the windows of one case
+    are not independent observations, so resampling windows would give an interval that
+    is far too narrow.
 """
 
 from __future__ import annotations
 
-__all__ = ["accuracy", "top2_recall", "plausible_agreement", "confusion_matrix", "per_difficulty"]
+import numpy as np
+
+__all__ = [
+    "accuracy",
+    "top2_recall",
+    "plausible_agreement",
+    "confusion_matrix",
+    "per_difficulty",
+    "per_class_recall",
+    "balanced_accuracy",
+    "macro_f1",
+    "cohen_kappa",
+    "cluster_bootstrap_ci",
+]
+
+#: Replicates and seed of the bootstrap interval: fixed, so the table is reproducible.
+BOOTSTRAP_REPLICATES = 2000
+BOOTSTRAP_SEED = 0
+BOOTSTRAP_CONFIDENCE = 95.0
 
 
 def accuracy(preds, refs):
@@ -87,3 +117,79 @@ def per_difficulty(preds, refs, difficulties):
         }
         for difficulty, group in groups.items()
     }
+
+
+def per_class_recall(preds, refs, labels):
+    """Recall of every label: of the windows whose truth is that label, how many were hit."""
+    counts = {label: [0, 0] for label in labels}
+    for pred, ref in zip(preds, refs):
+        if ref not in counts:
+            continue
+        counts[ref][0] += 1
+        counts[ref][1] += int(pred == ref)
+    return {
+        label: (hits / total) if total else 0.0 for label, (total, hits) in counts.items()
+    }
+
+
+def balanced_accuracy(preds, refs, labels):
+    """Mean per-class recall."""
+    recalls = list(per_class_recall(preds, refs, labels).values())
+    return sum(recalls) / len(recalls) if recalls else 0.0
+
+
+def macro_f1(preds, refs, labels):
+    """Mean F1 over the labels: precision and recall of every class weigh the same."""
+    scores = []
+    for label in labels:
+        hits = sum(1 for pred, ref in zip(preds, refs) if pred == label and ref == label)
+        predicted = sum(1 for pred in preds if pred == label)
+        actual = sum(1 for ref in refs if ref == label)
+        precision = hits / predicted if predicted else 0.0
+        recall = hits / actual if actual else 0.0
+        scores.append(
+            2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
+        )
+    return sum(scores) / len(scores) if scores else 0.0
+
+
+def cohen_kappa(preds, refs, labels):
+    """Agreement corrected by the agreement expected from the marginals alone."""
+    preds = list(preds)
+    refs = list(refs)
+    total = len(refs)
+    if not total:
+        return 0.0
+    observed = accuracy(preds, refs)
+    expected = sum(
+        (sum(1 for pred in preds if pred == label) / total)
+        * (sum(1 for ref in refs if ref == label) / total)
+        for label in labels
+    )
+    return (observed - expected) / (1.0 - expected) if expected < 1.0 else 0.0
+
+
+def cluster_bootstrap_ci(cases, hits, replicates=BOOTSTRAP_REPLICATES, seed=BOOTSTRAP_SEED,
+                         confidence=BOOTSTRAP_CONFIDENCE):
+    """Percentile interval of ``mean(hits)``, resampling whole cases with replacement.
+
+    Returns ``(low, high, mean)``. The windows of one case are decisions of the same
+    patient, so they are not independent; a bootstrap over cases is the honest interval.
+    """
+    cases = list(cases)
+    hits = np.asarray(list(hits), dtype=float)
+    if not len(cases):
+        return 0.0, 0.0, 0.0
+    grouped = {}
+    for position, case in enumerate(cases):
+        grouped.setdefault(case, []).append(position)
+    clusters = [np.asarray(positions) for positions in grouped.values()]
+
+    rng = np.random.default_rng(seed)
+    draws = rng.integers(0, len(clusters), size=(replicates, len(clusters)))
+    means = np.array(
+        [hits[np.concatenate([clusters[index] for index in draw])].mean() for draw in draws]
+    )
+    tail = (100.0 - confidence) / 2.0
+    low, high = np.percentile(means, [tail, 100.0 - tail])
+    return float(low), float(high), float(hits.mean())

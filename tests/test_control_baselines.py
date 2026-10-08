@@ -245,7 +245,7 @@ def test_the_comparison_table_lists_every_baseline_once(control_run):
     assert table.parent.name == "_comparison"
     with open(table, encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
-    assert [row["baseline"] for row in rows] == baselines.BASELINE_NAMES
+    assert [row["baseline"] for row in rows] == run_controls.default_names()
 
 
 def test_the_comparison_table_carries_the_run_folders(control_run):
@@ -330,7 +330,7 @@ def test_the_progress_flag_prints_every_window(tmp_path, capsys):
     run_controls.run_controls(split="dev", limit=3, results_root=tmp_path, progress=True)
 
     printed = capsys.readouterr().out
-    assert printed.count("case1169") == 3 * len(baselines.BASELINE_NAMES)
+    assert printed.count("case1169") == 3 * len(run_controls.default_names())
 
 
 # --------------------------------------------------------------------------- #

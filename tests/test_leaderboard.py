@@ -32,11 +32,25 @@ def _summary(split="dev", n=4, real=0.5, first=0.75, plausible=None, dry_run=Fal
 
 
 def _prediction(window_id, action, first, aux):
+    """A stored prediction: the analysis needs the truth, the summary does not."""
     return {
         "window_id": window_id,
         "action": action,
+        "real_action": first,
         "result_1": first,
         "result_aux": aux,
+    }
+
+
+def _scored(window_id, action, real, case_id=None):
+    """A stored prediction with the truth the analysis needs."""
+    return {
+        "window_id": window_id,
+        "action": action,
+        "real_action": real,
+        "result_1": action,
+        "result_aux": action,
+        "case_id": case_id or window_id.split("_")[0],
     }
 
 
@@ -134,6 +148,58 @@ def test_the_table_leaves_the_run_bookkeeping_out():
         assert dropped not in leaderboard.COLUMNS
     for kept in ("effort", "k", "group", "strategy", "split", "errors", "run_dir"):
         assert kept in leaderboard.COLUMNS
+
+
+def test_the_table_carries_the_uncertainty_and_prior_free_metrics():
+    for column in (
+        "ci95_low",
+        "ci95_high",
+        "balanced_accuracy",
+        "macro_f1",
+        "kappa",
+        *[f"recall_{action}" for action in dataset.ACTIONS],
+        *[f"predicted_{action}" for action in dataset.ACTIONS],
+    ):
+        assert column in leaderboard.COLUMNS, column
+
+
+def test_the_analysis_is_computed_from_the_predictions(tmp_path):
+    """A constant answer to a half-and-half truth: accuracy 0.5, no skill at all."""
+    predictions = [
+        _scored(
+            f"case{case}_w{index}",
+            "no_action",
+            "no_action" if index < 5 else "reduce_opioid",
+            f"case{case}",
+        )
+        for case in range(2)
+        for index in range(10)
+    ]
+    run_dir = _write_run(
+        tmp_path, "control", "always_no_action", "20261008-120000_dev",
+        _summary(real=0.5), predictions,
+    )
+
+    row = leaderboard.run_row("control", "always_no_action", run_dir)
+
+    assert float(row["agreement_result_real"]) == 0.5
+    assert float(row["balanced_accuracy"]) == 0.2  # only one of the five labels is recalled
+    assert float(row["kappa"]) == pytest.approx(0.0)  # and it carries no information
+    assert float(row["recall_no_action"]) == 1.0
+    assert float(row["recall_reduce_opioid"]) == 0.0
+    assert float(row["predicted_no_action"]) == 1.0
+    assert float(row["predicted_reduce_opioid"]) == 0.0
+    assert float(row["ci95_low"]) <= 0.5 <= float(row["ci95_high"])
+
+
+def test_a_run_without_predictions_leaves_the_analysis_empty(tmp_path):
+    run_dir = _write_run(tmp_path, "harness", "cot", "20261008-120000_dev", _summary())
+
+    row = leaderboard.run_row("harness", "cot", run_dir)
+
+    assert row["ci95_low"] is None and row["ci95_high"] is None
+    assert row["balanced_accuracy"] is None and row["macro_f1"] is None
+    assert row["recall_no_action"] is None and row["predicted_no_action"] is None
 
 
 def test_the_effort_and_the_k_come_from_the_run_settings(tmp_path):

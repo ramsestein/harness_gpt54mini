@@ -32,7 +32,7 @@ from pathlib import Path
 if __package__ in (None, ""):  # executed as a script, e.g. ``python src/leaderboard.py``
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src import config, metrics, results  # noqa: E402
+from src import config, dataset, metrics, results  # noqa: E402
 
 #: Name of the table inside the results folder.
 TABLE_NAME = "leaderboard.csv"
@@ -44,6 +44,10 @@ HARNESS_GROUP = "harness"
 
 #: Columns of the table. The run bookkeeping (id, window counts) is deliberately out:
 #: the table compares what each strategy is and scores, not how it was launched.
+#: ``ci95_low``/``ci95_high`` are the case-level bootstrap interval of the accuracy, and
+#: the rest is what a corpus with two labels at ~27 % each demands: metrics that do not
+#: reward leaning on the majority class (``balanced_accuracy``, ``macro_f1``, ``kappa``),
+#: the recall of every label and the distribution of what the strategy answered.
 COLUMNS = [
     "group",
     "strategy",
@@ -52,8 +56,15 @@ COLUMNS = [
     "k",
     "errors",
     "agreement_result_real",
+    "ci95_low",
+    "ci95_high",
     "agreement_result_1",
     "agreement_result_plausible",
+    "balanced_accuracy",
+    "macro_f1",
+    "kappa",
+    *[f"recall_{action}" for action in dataset.ACTIONS],
+    *[f"predicted_{action}" for action in dataset.ACTIONS],
     "run_dir",
 ]
 
@@ -122,12 +133,9 @@ def iter_runs(root=None):
             yield group, strategy_dir.name, run_dir
 
 
-def _plausible_from_predictions(run_dir):
+def _plausible_from_predictions(rows):
     """Agreement with ``result_1`` or ``result_aux`` of a run that predates the metric."""
-    path = Path(run_dir) / "predictions.jsonl"
-    if not path.is_file():
-        return None
-    rows = [row for row in results.read_predictions(path) if row.get("action")]
+    rows = [row for row in rows if row.get("action")]
     if not rows:
         return None
     return metrics.plausible_agreement(
@@ -156,14 +164,63 @@ def _first_meta(run_dir):
     return {}
 
 
+def scored_rows(run_dir):
+    """The rows of a run that count: a prediction and a truth to compare it with."""
+    path = Path(run_dir) / "predictions.jsonl"
+    if not path.is_file():
+        return []
+    return [
+        row
+        for row in results.read_predictions(path)
+        if row.get("action") and row.get("real_action")
+    ]
+
+
+def run_analysis(rows, labels=None):
+    """The uncertainty and prior-free metrics of a run, from its own predictions.
+
+    Everything here is computed from the stored predictions, so a run recorded before
+    these columns existed gets them anyway.
+    """
+    labels = list(labels if labels is not None else dataset.ACTIONS)
+    columns = (
+        ["ci95_low", "ci95_high", "balanced_accuracy", "macro_f1", "kappa"]
+        + [f"recall_{label}" for label in labels]
+        + [f"predicted_{label}" for label in labels]
+    )
+    if not rows:
+        return {column: None for column in columns}
+
+    preds = [row["action"] for row in rows]
+    refs = [row["real_action"] for row in rows]
+    hits = [int(pred == ref) for pred, ref in zip(preds, refs)]
+    # The interval resamples whole cases: the windows of a case are one patient.
+    low, high, _ = metrics.cluster_bootstrap_ci(
+        [row.get("case_id") or row["window_id"] for row in rows], hits
+    )
+    analysis = {
+        "ci95_low": round(low, 4),
+        "ci95_high": round(high, 4),
+        "balanced_accuracy": round(metrics.balanced_accuracy(preds, refs, labels), 4),
+        "macro_f1": round(metrics.macro_f1(preds, refs, labels), 4),
+        "kappa": round(metrics.cohen_kappa(preds, refs, labels), 4),
+    }
+    recalls = metrics.per_class_recall(preds, refs, labels)
+    for label in labels:
+        analysis[f"recall_{label}"] = round(recalls[label], 4)
+        analysis[f"predicted_{label}"] = round(preds.count(label) / len(preds), 4)
+    return analysis
+
+
 def run_row(group, strategy, run_dir):
-    """One row of the table, read from the run's own summary and settings."""
+    """One row of the table, read from the run's own summary, settings and predictions."""
     run_dir = Path(run_dir)
     summary = _summary_of(run_dir) or {}
     settings = _run_json(run_dir)
+    rows = scored_rows(run_dir)
     plausible = summary.get("agreement_result_plausible")
     if plausible is None:
-        plausible = _plausible_from_predictions(run_dir)
+        plausible = _plausible_from_predictions(rows)
 
     # ``run.json`` is the intended source; a run too old to carry the field falls back to
     # what its predictions recorded (and a strategy that uses no effort/k has neither).
@@ -186,6 +243,7 @@ def run_row(group, strategy, run_dir):
         "agreement_result_real": summary.get("accuracy"),
         "agreement_result_1": summary.get("agreement_result_1"),
         "agreement_result_plausible": plausible,
+        **run_analysis(rows),
         "run_dir": str(run_dir),
     }
 
