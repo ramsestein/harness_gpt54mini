@@ -22,7 +22,7 @@ from src.harness_base import Strategy
 NAME = "sim_normality"
 
 
-def _outcome(action, bis=50.0, map=77.5, co=6.0, tol=0.0):
+def _outcome(action, bis=50.0, map=77.5, co=6.0, tol=1.0):
     """One simulated future, centred on the normal range unless told otherwise."""
     return sim.SimulatedOutcome(
         action=action, bis=bis, map=map, co=co, tol=tol, u_propo=0.1, u_remi=0.05, u_nore=1.0
@@ -61,7 +61,7 @@ def _futures(filler=None, **deviations):
                 bis=moved.get("bis", 50.0),
                 map=moved.get("map", 77.5),
                 co=moved.get("co", 6.0),
-                tol=moved.get("tol", 0.0),
+                tol=moved.get("tol", 1.0),
             )
         )
     return outcomes
@@ -105,8 +105,20 @@ def test_it_is_not_a_harness_strategy():
 
 def test_the_normal_table_is_the_documented_one():
     assert sim_normality.SIGNALS == ("bis", "map", "co", "tol")
-    assert sim_normality.TARGETS == {"bis": 50.0, "map": 77.5, "co": 6.0, "tol": 0.0}
+    assert sim_normality.TARGETS == {"bis": 50.0, "map": 77.5, "co": 6.0, "tol": 1.0}
     assert sim_normality.TOLERANCES == {"bis": 10.0, "map": 12.5, "co": 2.0, "tol": 1.0}
+
+
+def test_the_tol_target_is_the_tolerating_end():
+    """TOL is a tolerance index: 1 tolerates the stimulus, 0 is the awake patient."""
+    strategy = _strategy()
+
+    tolerating = strategy.candidate(_outcome("no_action", tol=1.0))
+    awake = strategy.candidate(_outcome("no_action", tol=0.0))
+
+    assert tolerating["deviations"]["tol"] == 0.0
+    assert tolerating["score"] < awake["score"]
+    assert awake["deviations"]["tol"] == -1.0
 
 
 def test_a_positive_tolerance_is_required():
@@ -136,7 +148,7 @@ def test_every_signal_is_one_dimension():
         ("bis", 50.0, 10.0),
         ("map", 77.5, 12.5),
         ("co", 6.0, 2.0),
-        ("tol", 0.0, 1.0),
+        ("tol", 1.0, 1.0),
     ):
         moved = _outcome("no_action", **{signal: target + tolerance})
         assert strategy.candidate(moved)["score"] == pytest.approx(1.0)
@@ -146,7 +158,7 @@ def test_the_score_is_the_euclidean_distance_in_tolerance_units():
     strategy = _strategy()
 
     one = strategy.candidate(_outcome("no_action", bis=30.0))  # two tolerances off
-    two = strategy.candidate(_outcome("no_action", bis=60.0, tol=1.0))  # one each
+    two = strategy.candidate(_outcome("no_action", bis=60.0, tol=0.0))  # one each
 
     assert one["score"] == pytest.approx(2.0)
     assert two["score"] == pytest.approx(math.sqrt(2))
@@ -186,7 +198,7 @@ def test_it_picks_the_future_closest_to_the_centre(window):
                 dataset.ACTIONS[0]: {"bis": 20.0},
                 dataset.ACTIONS[1]: {"map": 140.0},
                 dataset.ACTIONS[2]: {"bis": 45.0},  # the least far from the centre
-                dataset.ACTIONS[3]: {"tol": 1.0},
+                dataset.ACTIONS[3]: {"tol": 0.0},
                 dataset.ACTIONS[4]: {"bis": 90.0},
             }
         )
@@ -244,14 +256,14 @@ def test_the_margin_is_the_gap_to_the_runner_up(window):
 
 
 def test_a_custom_target_moves_the_winner(window):
-    """Moving the TOL target to 1 turns the tolerating future into the good one."""
-    futures = _futures(**{dataset.ACTIONS[0]: {"tol": 1.0}})
+    """The TOL target is 1 (tolerating); moving it to 0 makes the tolerating future bad."""
+    futures = _futures(**{dataset.ACTIONS[0]: {"tol": 0.0}})
     default = _strategy(simulator=FakeSimulator(futures))
-    custom = _strategy(simulator=FakeSimulator(futures), targets={"tol": 1.0})
+    flipped = _strategy(simulator=FakeSimulator(futures), targets={"tol": 0.0})
 
     assert default.predict(window).action == dataset.ACTIONS[1]
-    assert custom.predict(window).action == dataset.ACTIONS[0]
-    assert custom.predict(window).meta["targets"]["tol"] == 1.0
+    assert flipped.predict(window).action == dataset.ACTIONS[0]
+    assert default.predict(window).meta["targets"]["tol"] == 1.0
 
 
 def test_a_custom_tolerance_moves_the_winner(window):

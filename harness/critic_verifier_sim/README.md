@@ -18,11 +18,28 @@ instead of asking for a second opinion on the same question.
 propofol / remifentanil / norepinephrine and outputs BIS, MAP, CO and TOL.
 
 **Calibration.** `Patient.find_equilibrium` needs the CasADi `ipopt` plugin, which
-the pip wheel does not ship, so it is *not* used. `initialized_at_given_input`
-solves the equilibrium analytically with `numpy.linalg.solve`, so the calibration
-here is a **bisection**: first the propofol/remifentanil rate ratio that reproduces
-the window's BIS, then the norepinephrine rate that reproduces its MAP. Both land
-within 0.5 of the target in ~140 ms per window (tested on real `test` windows).
+the pip wheel does not ship, so it is *not* used. The calibration is a bisection:
+
+1. The **mix** of the two hypnotics comes from the effect-site concentrations the window
+   carries (`ce_propofol`, `ce_remi`): each rate is solved so the model's equilibrium
+   concentration matches the observed one, and the quotient is the ratio. A fixed ratio is
+   arbitrary and was measurably wrong (it produced a model concentration ratio of 2.9
+   against an observed 0.7, i.e. a state four times more propofol-dominated than the
+   patient's). Windows without concentrations fall back to `DEFAULT_RATIO` and say so in
+   `ratio_source`.
+2. The **level** is then set so the model reproduces the BIS the window shows. Matching the
+   concentrations in absolute terms instead would leave the BIS up to **19 points** off:
+   the dataset's PK/PD model and PAS's do not agree on concentration → BIS, so the
+   concentrations can set the mix but not the level.
+3. **MAP** is matched with norepinephrine, which is a modelling compromise: the corpus has
+   no vasopressor field at all, and the model's MAP runs ~28 mmHg below the observed one,
+   so that rate absorbs model error as much as real drug. `match_map=False` drops it.
+
+**The horizon.** The patient is initialised with the *calibrated* rates and the action is
+applied during the integration. Initialising at the post-action rates — the obvious
+mistake, and what this adapter did first — puts the patient at the equilibrium of the new
+rates, so the integration returns the infinity-time state for ever (measured: BIS 29.8
+instead of the true five-minute 36.7 for a ×1.5 propofol step).
 
 **Missing baselines.** A window does not always carry those two numbers: `BIS` is
 absent in 5.6% of `train`, **85.8% of `dev`** and 2.8% of `test`; `MAP` in 1.8% of
@@ -50,6 +67,9 @@ the comparison between the two candidates is unchanged.
 and TOL. PAS has no HR, EtCO2, SpO2 or labs, so the critic cannot see them; the
 window is *not* a dataset window with two fields swapped.
 
+TOL is a **tolerance** index (1 = tolerates laryngoscopy, 0 = awake) and rises with the
+opioid, so the critic is told to want it **close to 1**, never close to 0.
+
 ## Blind presentation
 
 The two windows are shown as `WINDOW 1` / `WINDOW 2` in an order derived from a
@@ -60,7 +80,7 @@ The prompt never names the action behind a window.
 ## Judging criterion
 
 The critic is given explicit targets: BIS between 40 and 60, MAP at or above
-65 mmHg without hypertension, TOL close to 0. Without a criterion "more
+65 mmHg without hypertension, TOL close to 1. Without a criterion "more
 beneficial" cannot be answered; this is the only content added beyond the
 simulated signals.
 

@@ -67,7 +67,7 @@ score = sqrt( sum_i ((x_i - target_i) / tolerance_i)^2 )
 | `bis` | 50.0 | 10.0 | surgical anaesthesia band 40-60 |
 | `map` | 77.5 | 12.5 | perfusion band 65-90 (no hypotension, no hypertension) |
 | `co` | 6.0 | 2.0 | cardiac output band 4-8 L/min |
-| `tol` | 0.0 | 1.0 | nociception index in [0, 1]; the target is 0 |
+| `tol` | 1.0 | 1.0 | tolerance index: 1 = tolerates laryngoscopy, 0 = awake |
 
 The bounds were measured on the simulator's own output, not guessed. Both tables are
 overridable (`targets=`, `tolerances=`) so the normalisation can be re-run as a

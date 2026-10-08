@@ -14,7 +14,8 @@ Judge which of the two windows is the more beneficial for the patient. A window 
 
 - BIS (bispectral index) between 40 and 60;
 - MAP (mean arterial pressure) at or above 65 mmHg, without hypertension;
-- TOL (tolerance of laryngoscopy) close to 0, meaning no nociceptive drive.
+- TOL (tolerance of laryngoscopy) close to 1, meaning the patient tolerates the
+  stimulus; a TOL near 0 means insufficient analgesia.
 
 Weigh the two windows against those targets and pick the better one. If they are equally good, say so is not allowed: choose the one that is closer to the targets on the axis that matters most for this patient.
 

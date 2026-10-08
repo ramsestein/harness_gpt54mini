@@ -23,11 +23,17 @@ signal       target    tolerance    why
 ``bis``      50.0      10.0         surgical anaesthesia band 40-60
 ``map``      77.5      12.5         perfusion band 65-90 (no hypotension, no hypertension)
 ``co``       6.0       2.0          cardiac output band 4-8 L/min
-``tol``      0.0       1.0          nociception index in [0, 1]; the target is 0
+``tol``      1.0       1.0          tolerance of laryngoscopy: 1 = tolerates, 0 = awake
 ===========  ========  ===========  ===============================================
 
-All four are measured, not guessed: the simulator's own spread and the windows it
-reproduces were inspected first (see ``tests/test_sim_normality.py``).
+``tol`` is a tolerance index, not a nociception index: ``TOL_model.compute_tol`` documents
+"TOL = 1 mean very relaxed and will tolerate laryngoscopie while TOL = 0 mean fully awake"
+and it rises with the opioid, so the target is **1.0**. Targeting 0 rewards the least
+analgesia and biases the answer towards ``reduce_opioid``.
+
+All four are measured, not guessed: the simulator's own spread, the windows it reproduces
+and the direction of every signal were inspected first (see
+``tests/test_sim_normality.py`` and the adapter's docstring).
 
 Everything is deterministic: no seed, no model, no sampling. Results go to
 ``results_harness/control/sim_normality/<run_id>/``.
@@ -62,7 +68,7 @@ TARGETS = {
     "bis": 50.0,
     "map": 77.5,
     "co": 6.0,
-    "tol": 0.0,
+    "tol": 1.0,  # tolerance index: 1 = tolerates laryngoscopy, 0 = awake
 }
 
 #: Deviation of each signal that counts as one unit of "far from the centre".

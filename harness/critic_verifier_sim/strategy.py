@@ -88,7 +88,7 @@ class SimulatedCriticStrategy(Strategy):
             f"BIS (bispectral index): {signals['bis']}\n"
             f"MAP (mean arterial pressure): {signals['map']} mmHg\n"
             f"CO (cardiac output): {signals['co']} L/min\n"
-            f"TOL (tolerance of laryngoscopy): {signals['tol']}"
+            f"TOL (tolerance of laryngoscopy, 1 = tolerates): {signals['tol']}"
         )
 
     def build_critic_messages(self, outcomes, order):

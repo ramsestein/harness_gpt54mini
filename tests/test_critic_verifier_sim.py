@@ -141,6 +141,99 @@ def test_the_outcome_carries_the_simulated_signals(window, increased_and_baselin
     assert signals["tol"] >= 0
 
 
+def test_tol_rises_with_the_opioid(window, engine):
+    """TOL is a *tolerance* index: analgesia raises it, so 1 is the good end."""
+    _, outcomes = engine.simulate(
+        window.input, ["increase_opioid", "reduce_opioid", "no_action"]
+    )
+    by_action = {outcome.action: outcome.tol for outcome in outcomes}
+
+    assert by_action["reduce_opioid"] < by_action["no_action"]
+    assert by_action["increase_opioid"] >= by_action["no_action"]
+
+
+# --------------------------------------------------------------------------- #
+# The five-minute horizon
+# --------------------------------------------------------------------------- #
+
+
+def test_the_horizon_is_a_transient_not_the_new_equilibrium(window, engine):
+    """Initialising at the post-action rates would answer with the infinity-time state."""
+    calibration, (increased, baseline) = engine.simulate(
+        window.input, ["increase_hypnotic", "no_action"]
+    )
+    steady = engine._steady(
+        engine._new_patient(window.input),
+        increased.u_propo, increased.u_remi, increased.u_nore,
+    )
+
+    assert increased.bis != pytest.approx(steady.bis, abs=0.5)
+    # five minutes into a deeper anaesthesia: below the baseline, above the equilibrium
+    assert steady.bis < increased.bis < baseline.bis
+
+
+def test_the_transient_keeps_moving_towards_the_new_state(window):
+    short = sim.AnesthesiaSimulator(horizon_seconds=30)
+    long = sim.AnesthesiaSimulator(horizon_seconds=300)
+    patient_short = short._new_patient(window.input)
+    patient_long = long._new_patient(window.input)
+
+    early = short.simulate_action(
+        patient_short, short.calibrate(window.input, patient=patient_short), "increase_hypnotic"
+    )
+    late = long.simulate_action(
+        patient_long, long.calibrate(window.input, patient=patient_long), "increase_hypnotic"
+    )
+
+    assert late.bis < early.bis
+
+
+# --------------------------------------------------------------------------- #
+# The calibration: the mix and the vasopressor
+# --------------------------------------------------------------------------- #
+
+
+def test_the_drug_mix_comes_from_the_window_concentrations(window, engine):
+    calibration, _ = engine.simulate(window.input, dataset.ACTIONS)
+
+    assert calibration.ratio_source == "observed_concentrations"
+    assert calibration.u_propo / calibration.u_remi == pytest.approx(calibration.ratio)
+    assert calibration.ratio != pytest.approx(sim.DEFAULT_RATIO)
+    assert calibration.as_dict()["ratio_source"] == "observed_concentrations"
+
+
+def test_a_window_without_concentrations_falls_back_to_a_default_mix(window, engine):
+    gone = dataclasses.replace(
+        window, input={**window.input, "ce_propofol": None, "ce_remi": None}
+    )
+
+    calibration, _ = engine.simulate(gone.input, ["no_action", "increase_hypnotic"])
+
+    assert calibration.ratio_source == "default"
+    assert calibration.ratio == sim.DEFAULT_RATIO
+
+
+def test_the_level_is_still_fitted_to_the_window_state(window, engine):
+    """Whatever the mix is, the calibration reproduces the BIS and MAP the window shows."""
+    calibration, _ = engine.simulate(window.input, dataset.ACTIONS)
+
+    assert abs(calibration.bis_residual) < 0.5
+    assert abs(calibration.map_residual) < 0.5
+    assert calibration.map_matched_with_nore is True
+    assert calibration.u_nore > 0
+
+
+def test_the_vasopressor_can_be_left_out(window):
+    engine = sim.AnesthesiaSimulator(horizon_seconds=60, match_map=False)
+
+    calibration, _ = engine.simulate(window.input, ["no_action", "increase_hypnotic"])
+
+    assert calibration.u_nore == 0.0
+    assert calibration.map_matched_with_nore is False
+    # the model's own MAP runs well below the observed one: measured, not assumed
+    assert calibration.map_residual < -5.0
+
+
 # --------------------------------------------------------------------------- #
 # Missing baselines
 # --------------------------------------------------------------------------- #
