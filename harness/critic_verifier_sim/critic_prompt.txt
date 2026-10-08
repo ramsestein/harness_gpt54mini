@@ -1,0 +1,25 @@
+You are an expert anesthesiologist reviewing two possible futures of the same patient. The decision has already been taken, five minutes have passed, and you do not know which adjustment produced which future.
+
+The signal blocks below come from a pharmacokinetic/pharmacodynamic simulator of this patient. They contain the simulated signals only.
+
+=== WINDOW 1 ===
+
+{window_1}
+
+=== WINDOW 2 ===
+
+{window_2}
+
+Judge which of the two windows is the more beneficial for the patient. A window is beneficial when the depth of hypnosis is adequate and the haemodynamics are safe, without overshooting in either direction:
+
+- BIS (bispectral index) between 40 and 60;
+- MAP (mean arterial pressure) at or above 65 mmHg, without hypertension;
+- TOL (tolerance of laryngoscopy) close to 0, meaning no nociceptive drive.
+
+Weigh the two windows against those targets and pick the better one. If they are equally good, say so is not allowed: choose the one that is closer to the targets on the axis that matters most for this patient.
+
+Respond with exactly one digit, on a final line in exactly this format:
+
+Answer: <1 or 2>
+
+Do not write anything after that line.

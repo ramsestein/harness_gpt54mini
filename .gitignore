@@ -1,0 +1,27 @@
+# Secrets and local artifacts
+.env
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.vscode/
+
+# Harness outputs (predictions, metrics)
+results_harness/control/
+results_harness/cot/
+results_harness/critic_verifier/
+results_harness/critic_verifier_sim/
+results_harness/few_shot/
+results_harness/self_consistency/
+results_harness/structured_json/
+results_harness/zero_shot/
+
+# Data
+dataset/
+
+

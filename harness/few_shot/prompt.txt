@@ -1,0 +1,22 @@
+Below are {n_examples} similar past decision windows from the same cohort, ordered from most to least similar to the current case. Each one shows the state of that patient and the adjustment the clinician actually made.
+
+=== SIMILAR PAST WINDOWS ===
+
+{examples}
+
+=== CURRENT CASE ===
+
+{case}
+
+Based ONLY on the information about the current case, decide the single best next anesthetic adjustment.
+
+Choose exactly one of the following five options:
+
+a) increase_hypnotic  - increase the hypnotic (propofol) infusion rate
+b) reduce_hypnotic    - reduce the hypnotic (propofol) infusion rate
+c) increase_opioid    - increase the opioid (remifentanil) infusion rate
+d) reduce_opioid      - reduce the opioid (remifentanil) infusion rate
+e) no_action          - make no infusion-rate change at this moment
+
+Respond with exactly one character: the letter of your choice (a, b, c, d, or e).
+Output nothing else.

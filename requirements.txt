@@ -1,0 +1,6 @@
+# Project dependencies (all already available in the current environment).
+openai>=1.55
+python-dotenv>=1.2
+pytest>=8
+pandas
+numpy

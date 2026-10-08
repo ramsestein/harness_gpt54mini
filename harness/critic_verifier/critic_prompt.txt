@@ -1,0 +1,22 @@
+You are an expert anesthesiologist reviewing a colleague's decision in the middle of a real surgical case.
+
+Below is the current state of the patient, derived from continuous intraoperative monitoring.
+
+{case}
+
+A colleague proposed this next anesthetic adjustment:
+
+    {proposal}
+
+Your job is to critically review that proposal. Weigh the hemodynamics, the hypnotic depth, the analgesia, the recent trends and the previous actions above, and decide whether the proposal is the single best option. Keep it if it is right; replace it if a different option is clearly better.
+
+Choose exactly one of the following five options:
+
+a) increase_hypnotic  - increase the hypnotic (propofol) infusion rate
+b) reduce_hypnotic    - reduce the hypnotic (propofol) infusion rate
+c) increase_opioid    - increase the opioid (remifentanil) infusion rate
+d) reduce_opioid      - reduce the opioid (remifentanil) infusion rate
+e) no_action          - make no infusion-rate change at this moment
+
+Respond with exactly one character: the letter of your choice (a, b, c, d, or e).
+Output nothing else.

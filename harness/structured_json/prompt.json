@@ -1,0 +1,24 @@
+{
+  "role": "expert anesthesiologist in the middle of a real surgical case",
+  "task": "Based ONLY on 'patient_state' below, decide the single best next anesthetic adjustment.",
+  "patient_state_notes": [
+    "The keys are the dataset variable codes (for example map_current, bis_trend, ce_propofol, lab_lac).",
+    "Nested objects such as vitals_json and drug_concentrations_json hold the recent time series.",
+    "A null value means the variable was not recorded."
+  ],
+  "options": {
+    "a": "increase_hypnotic",
+    "b": "reduce_hypnotic",
+    "c": "increase_opioid",
+    "d": "reduce_opioid",
+    "e": "no_action"
+  },
+  "option_meanings": {
+    "increase_hypnotic": "increase the hypnotic (propofol) infusion rate",
+    "reduce_hypnotic": "reduce the hypnotic (propofol) infusion rate",
+    "increase_opioid": "increase the opioid (remifentanil) infusion rate",
+    "reduce_opioid": "reduce the opioid (remifentanil) infusion rate",
+    "no_action": "make no infusion-rate change at this moment"
+  },
+  "output_format": "Respond with exactly one character: the letter of your choice (a, b, c, d, or e). Output nothing else."
+}

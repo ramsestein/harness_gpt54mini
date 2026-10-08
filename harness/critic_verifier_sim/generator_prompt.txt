@@ -1,0 +1,20 @@
+You are an expert anesthesiologist in the middle of a real surgical case. Below is the current state of the patient, derived from continuous intraoperative monitoring.
+
+{case}
+
+Two candidate adjustments will be simulated on this patient and compared against each other, so do not pick only one. Propose the two most appropriate options. They must be different from each other, and between them they should cover the plausible readings of the case: if the picture is ambiguous, prefer one option per competing reading rather than two variants of the same idea.
+
+Choose among these five options:
+
+a) increase_hypnotic  - increase the hypnotic (propofol) infusion rate
+b) reduce_hypnotic    - reduce the hypnotic (propofol) infusion rate
+c) increase_opioid    - increase the opioid (remifentanil) infusion rate
+d) reduce_opioid      - reduce the opioid (remifentanil) infusion rate
+e) no_action          - make no infusion-rate change at this moment
+
+Respond with exactly these two lines and nothing else:
+
+Candidate 1: <letter>
+Candidate 2: <letter>
+
+where each <letter> is one of a, b, c, d or e.

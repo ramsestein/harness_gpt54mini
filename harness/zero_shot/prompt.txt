@@ -1,0 +1,16 @@
+You are an expert anesthesiologist in the middle of a real surgical case. Below is the current state of the patient, derived from continuous intraoperative monitoring.
+
+{case}
+
+Based ONLY on the information above, decide the single best next anesthetic adjustment.
+
+Choose exactly one of the following five options:
+
+a) increase_hypnotic  - increase the hypnotic (propofol) infusion rate
+b) reduce_hypnotic    - reduce the hypnotic (propofol) infusion rate
+c) increase_opioid    - increase the opioid (remifentanil) infusion rate
+d) reduce_opioid      - reduce the opioid (remifentanil) infusion rate
+e) no_action          - make no infusion-rate change at this moment
+
+Respond with exactly one character: the letter of your choice (a, b, c, d, or e).
+Output nothing else.
