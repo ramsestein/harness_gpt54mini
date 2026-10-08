@@ -241,6 +241,15 @@ def test_the_prompt_shows_the_examples_with_their_real_actions(monkeypatch):
     assert "{n_examples}" not in prompt
 
 
+def test_the_prompt_tells_the_model_to_use_the_examples():
+    """It used to say "Based ONLY on the information about the current case"."""
+    text = PROMPT_FILE.read_text(encoding="utf-8")
+
+    assert "Based ONLY on the information about the current case" not in text
+    assert "similar past windows are your evidence" in text
+    assert "the most similar windows count the most" in text
+
+
 def test_the_prompt_offers_exactly_five_options():
     text = PROMPT_FILE.read_text(encoding="utf-8")
     assert "{examples}" in text and "{case}" in text

@@ -8,7 +8,7 @@ Below are {n_examples} similar past decision windows from the same cohort, order
 
 {case}
 
-Based ONLY on the information about the current case, decide the single best next anesthetic adjustment.
+Decide the single best next anesthetic adjustment for the current case. The similar past windows are your evidence: when a previous patient was in a comparable state, the adjustment that clinician made is a strong indication of what is appropriate here, and the most similar windows count the most. Use the current patient's own state to judge how far each analogy carries.
 
 Choose exactly one of the following five options:
 
