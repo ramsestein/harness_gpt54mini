@@ -66,7 +66,11 @@ def test_input_is_sanitised_but_raw_is_preserved():
     for field in dataset.IDENTIFIER_FIELDS:
         assert field in w.raw_input
         assert field not in w.input
-    assert len(w.input) == RAW_INPUT_FIELDS - len(dataset.IDENTIFIER_FIELDS)
+    # the input is the shared view: every hidden field (src.view) is gone, nothing else
+    from src import view
+    hidden = view.hidden_in(w.raw_input)
+    assert set(dataset.IDENTIFIER_FIELDS) <= set(hidden)
+    assert set(w.input) == set(w.raw_input) - set(hidden)
 
 
 def test_load_split_respects_limit_and_order():

@@ -2,6 +2,7 @@
 .env
 .venv/
 venv/
+_to_delete/
 
 # Python
 __pycache__/
@@ -20,8 +21,15 @@ results_harness/few_shot/
 results_harness/self_consistency/
 results_harness/structured_json/
 results_harness/zero_shot/
+results_harness/support/
+results_harness/rag/
+results_harness/shap_prompt/
+results_harness/_launches/
+results_harness/_models/
 
 # Data
 dataset/
+review/
+context/
 
 

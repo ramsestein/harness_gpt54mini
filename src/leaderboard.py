@@ -17,8 +17,14 @@ baselines, from ``control/<baseline>/<run_id>/summary.json``. Folders starting w
 summary predates ``agreement_result_plausible`` gets the value computed from its own
 ``predictions.jsonl``, so old runs need no recomputation.
 
+Two runs of the same strategy, split, effort and ``k`` are the same experiment run
+twice: the table keeps the **most recent** one, so what is compared across strategies
+is one configuration each. (``collect_rows(..., latest_only=False)`` still returns
+everything, and the runs themselves are never touched.)
+
     python -m src.leaderboard
     python -m src.leaderboard --results-root C:\\scratch --output table.csv
+    python -m src.leaderboard --all-runs
 """
 
 from __future__ import annotations
@@ -32,7 +38,7 @@ from pathlib import Path
 if __package__ in (None, ""):  # executed as a script, e.g. ``python src/leaderboard.py``
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src import config, dataset, metrics, results  # noqa: E402
+from src import config, dataset, metrics, results, view  # noqa: E402
 
 #: Name of the table inside the results folder.
 TABLE_NAME = "leaderboard.csv"
@@ -42,8 +48,9 @@ CONTROL_DIRNAME = "control"
 CONTROL_GROUP = "control"
 HARNESS_GROUP = "harness"
 
-#: Columns of the table. The run bookkeeping (id, window counts) is deliberately out:
-#: the table compares what each strategy is and scores, not how it was launched.
+#: Columns of the table. The run bookkeeping (id, window counts, run folder) is
+#: deliberately out: the table compares what each strategy is and scores, not how or when
+#: it was launched.
 #: ``ci95_low``/``ci95_high`` are the case-level bootstrap interval of the accuracy, and
 #: the rest is what a corpus with two labels at ~27 % each demands: metrics that do not
 #: reward leaning on the majority class (``balanced_accuracy``, ``macro_f1``, ``kappa``),
@@ -51,9 +58,11 @@ HARNESS_GROUP = "harness"
 COLUMNS = [
     "group",
     "strategy",
+    "model",
     "split",
     "effort",
     "k",
+    "view",
     "errors",
     "agreement_result_real",
     "ci95_low",
@@ -65,7 +74,6 @@ COLUMNS = [
     "kappa",
     *[f"recall_{action}" for action in dataset.ACTIONS],
     *[f"predicted_{action}" for action in dataset.ACTIONS],
-    "run_dir",
 ]
 
 
@@ -236,35 +244,122 @@ def run_row(group, strategy, run_dir):
     return {
         "group": group,
         "strategy": strategy,
+        # the model the run was made with (``None`` for a strategy that calls no model)
+        "model": settings.get("model"),
         "split": summary.get("split"),
         "effort": effort,
         "k": k,
+        # the shared view the run saw (``src.view``); runs older than the view carry none
+        "view": settings.get("view_version"),
         "errors": summary.get("errors", 0),
         "agreement_result_real": summary.get("accuracy"),
         "agreement_result_1": summary.get("agreement_result_1"),
         "agreement_result_plausible": plausible,
         **run_analysis(rows),
-        "run_dir": str(run_dir),
     }
 
 
-def collect_rows(root=None):
-    """Every row of the table, ordered by group, strategy and run id."""
-    return [
-        run_row(group, strategy, run_dir)
-        for group, strategy, run_dir in iter_runs(root)
-    ]
+def run_timestamp(run_dir):
+    """The run id inside the folder name -- ``<YYYYmmdd-HHMMSS>_<split>``; it sorts by time.
+
+    A folder that does not follow the convention keeps its whole name, which is still a
+    stable ordering key.
+    """
+    return Path(run_dir).name.partition("_")[0]
 
 
-def write_leaderboard(root=None, output=None):
-    """Write the table and return its path (``<root>/leaderboard.csv`` by default)."""
+def run_key(group, strategy, row):
+    """What makes two rows the same experiment: same group, strategy, model, split, effort, k, view.
+
+    The model is part of it: the same strategy on two models are two experiments, and their
+    rows must not replace each other.
+    """
+    return (
+        group,
+        strategy,
+        row.get("model"),
+        row.get("split"),
+        row.get("effort"),
+        row.get("k"),
+        row.get("view"),
+    )
+
+
+def latest_per_configuration(entries):
+    """``entries`` as ``(group, strategy, timestamp, row)``, keeping the newest of each run
+    configuration."""
+    newest = {}
+    for group, strategy, timestamp, row in entries:
+        key = run_key(group, strategy, row)
+        previous = newest.get(key)
+        if previous is None or timestamp >= previous[2]:
+            newest[key] = (group, strategy, timestamp, row)
+    return list(newest.values())
+
+
+#: ``view_version`` value meaning "keep the runs of every view".
+ALL_VIEWS = "all"
+
+#: Name of the table that holds only the runs made with another model.
+MODELS_TABLE_NAME = "leaderboard_models.csv"
+
+
+def collect_rows(root=None, latest_only=True, view_version=view.VIEW_VERSION, models_only=False,
+                 model=None):
+    """Every row of the table, ordered by group, strategy and run id.
+
+    With ``latest_only`` (the default) two runs of the same configuration collapse into
+    the most recent one: the table then holds one row per configuration, not per attempt.
+
+    Only the runs made on ``view_version`` -- the current shared view by default -- are
+    kept, so the table never mixes strategies that saw different windows; pass
+    :data:`ALL_VIEWS` to keep every run (the ``view`` column then tells them apart).
+
+    ``model`` keeps one model only; ``models_only`` keeps the runs made with any model
+    other than the project's own (the point of the second table), which is also what
+    excludes the no-model controls.
+    """
     base = _root(root)
-    path = Path(output) if output is not None else base / TABLE_NAME
+    entries = [
+        (group, strategy, run_timestamp(run_dir), run_row(group, strategy, run_dir))
+        for group, strategy, run_dir in iter_runs(base)
+    ]
+    if view_version != ALL_VIEWS:
+        entries = [entry for entry in entries if entry[3].get("view") == view_version]
+    if model is not None:
+        entries = [entry for entry in entries if entry[3].get("model") == model]
+    elif models_only:
+        entries = [
+            entry
+            for entry in entries
+            if entry[3].get("model") and entry[3].get("model") != config.DEFAULT_MODEL
+        ]
+    if latest_only:
+        entries = latest_per_configuration(entries)
+    entries.sort(key=lambda entry: (entry[0], entry[1], entry[2], str(entry[3].get("split") or "")))
+    return [row for *_, row in entries]
+
+
+def write_leaderboard(root=None, output=None, latest_only=True, view_version=view.VIEW_VERSION,
+                      models_only=False, model=None):
+    """Write the table and return its path.
+
+    By default it is ``<root>/leaderboard.csv``; with ``models_only`` it is
+    ``<root>/leaderboard_models.csv``, holding only the runs made with another model.
+    """
+    base = _root(root)
+    if output is not None:
+        path = Path(output)
+    else:
+        path = base / (MODELS_TABLE_NAME if models_only else TABLE_NAME)
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=COLUMNS)
         writer.writeheader()
-        writer.writerows(collect_rows(base))
+        writer.writerows(
+            collect_rows(base, latest_only=latest_only, view_version=view_version,
+                         models_only=models_only, model=model)
+        )
     return path
 
 
@@ -283,12 +378,43 @@ def build_parser():
         default=None,
         help=f"CSV to write (default: <results-root>/{TABLE_NAME})",
     )
+    parser.add_argument(
+        "--all-runs",
+        action="store_true",
+        help="keep every run instead of only the newest of each configuration",
+    )
+    parser.add_argument(
+        "--all-views",
+        action="store_true",
+        help=f"keep the runs of every view of the window, not only the current one "
+             f"({view.VIEW_VERSION}); the 'view' column tells them apart",
+    )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help="keep only the runs made with this model (e.g. gpt-5.4-pro)",
+    )
+    parser.add_argument(
+        "--models-only",
+        action="store_true",
+        help=(
+            f"keep only the runs made with another model, and write "
+            f"<results-root>/{MODELS_TABLE_NAME} unless --output says otherwise"
+        ),
+    )
     return parser
 
 
 def main(argv=None):
     args = build_parser().parse_args(argv)
-    path = write_leaderboard(args.results_root, output=args.output)
+    path = write_leaderboard(
+        args.results_root,
+        output=args.output,
+        latest_only=not args.all_runs,
+        view_version=ALL_VIEWS if args.all_views else view.VIEW_VERSION,
+        models_only=args.models_only,
+        model=args.model,
+    )
     print(f"Leaderboard written to {path}")
     return 0
 

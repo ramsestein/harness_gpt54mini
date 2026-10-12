@@ -22,16 +22,19 @@ from pathlib import Path
 
 import numpy as np
 
-from src import config, dataset, prompting
+from src import config, dataset, prompting, view
 
 #: Corpus split. Only training windows may be retrieved.
 SOURCE_SPLIT = "train"
 
-#: Bump when the extraction, the standardisation or the stored file layout changes.
-INDEX_VERSION = 1
+#: Bump when the extraction, the standardisation or the stored file layout changes. It is
+#: tied to the shared view (``src.view.VIEW_VERSION``): an index built on another view, with
+#: other features and other cached prompts, is refused and rebuilt.
+INDEX_VERSION = 100 + view.VIEW_VERSION
 
-#: Fields that must never take part in the similarity: identifiers and labels.
-EXCLUDED_FIELDS = frozenset(dataset.IDENTIFIER_FIELDS) | {
+#: Fields that must never take part in the similarity: identifiers, bookkeeping and every
+#: field outside the shared view (``window.input`` is already the view; this is a guard).
+EXCLUDED_FIELDS = frozenset(dataset.IDENTIFIER_FIELDS) | view.HIDDEN_FIELDS | {
     "case_id",
     "case_id_fill",
     "window_id",
@@ -51,7 +54,7 @@ def feature_names(windows):
     names = set()
     for window in windows:
         for name, value in window.input.items():
-            if name not in EXCLUDED_FIELDS and is_feature(value):
+            if name not in EXCLUDED_FIELDS and not view.is_hidden(name) and is_feature(value):
                 names.add(name)
     return sorted(names)
 

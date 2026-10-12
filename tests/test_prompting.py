@@ -59,16 +59,19 @@ def test_the_infusions_are_rendered_with_their_target_and_direction():
     """The five options are infusion-rate changes: the rate state must be visible."""
     inp = {
         "ce_propofol": 3.5,
-        "ct_propofol": 3.5,
+        "ct_propofol": 9.9,  # the pump target at t = 0 is outside the shared view
         "propofol_ce_trend": "stable",
         "ce_remi": 4.99,
         "remi_ce_trend": "falling",
-        "actions_history_json": [_adjustment(-390, "remifentanil", 11.76, 5.78)],
+        "actions_history_json": [_adjustment(-600, "propofol", 3.0, 3.5),
+                                 _adjustment(-390, "remifentanil", 11.76, 5.78)],
     }
 
     text = prompting.render_case(inp)
 
+    # targets come from the past adjustments of each drug, never from ct_*
     assert "Infusions: propofol target 3.5, effect-site 3.5 (stable)" in text
+    assert "9.9" not in text
     assert "remifentanil target 5.78, effect-site 4.99 (falling)" in text
     assert "Most recent infusion adjustment: remifentanil target 11.76 -> 5.78 (6.5 min ago)" in text
 
@@ -83,8 +86,13 @@ def test_the_last_adjustment_is_the_most_recent_one():
 
     text = prompting.render_case(inp)
 
-    assert "propofol target 3 -> 4.5 (2 min ago)" in text
-    assert "0.37" not in text
+    assert "Most recent infusion adjustment: propofol target 3 -> 4.5 (2 min ago)" in text
+    # the older remifentanil adjustment only sets that drug's current target in the prose;
+    # the adjustment itself is listed in the full record
+    prose, _, record = text.partition("Full monitoring record")
+    assert "remifentanil target 0.37" in prose
+    assert "0 -> 0.37" not in prose
+    assert "new_target 0.37" in record
 
 
 def test_the_time_out_of_band_is_rendered_only_when_it_happened():
@@ -94,6 +102,7 @@ def test_the_time_out_of_band_is_rendered_only_when_it_happened():
     assert "MAP below 65 mmHg for 28 s" in text
     assert "MAP below 55 mmHg for 10 s" in text
     assert "BIS below 40" not in text
+    assert "bis_below_40_sec 0" in text  # a zero is still part of the view: in the record
 
 
 def test_the_trend_keeps_its_steepness():

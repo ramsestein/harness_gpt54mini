@@ -30,7 +30,7 @@ from pathlib import Path
 if __package__ in (None, ""):  # executed as a script, e.g. ``python harness/run.py``
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src import config, dataset, harness_registry, leaderboard, metrics, prompting, results  # noqa: E402
+from src import config, dataset, harness_registry, leaderboard, metrics, prompting, results, view  # noqa: E402
 from src.harness_base import Prediction, Strategy  # noqa: E402
 
 
@@ -93,6 +93,25 @@ def build_parser():
     )
     parser.add_argument(
         "--dry-run", action="store_true", help="render the prompts without calling the model"
+    )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help=(
+            "model to run this batch against (default: the configured one). The model is a "
+            "property of the run, so the same strategy runs against any model"
+        ),
+    )
+    parser.add_argument(
+        "--api-key-env",
+        default=None,
+        help=(
+            "environment variable holding the key for --model (default: OPENAI_API_KEY). "
+            "The key itself is never written to the results"
+        ),
+    )
+    parser.add_argument(
+        "--base-url", default=None, help="endpoint for --model (default: the configured one)"
     )
     parser.add_argument("--quiet", action="store_true", help="do not print progress")
     return parser
@@ -214,6 +233,18 @@ def _report(position, total, window, outcome, quiet):
     )
 
 
+def _recorded_model(strategy, uses_model):
+    """The model ``run.json`` records for a run.
+
+    A strategy that calls the model records its own. One that calls none -- a hybrid that
+    leans on answers stored by an earlier run -- records the model of those answers: without
+    it the table cannot tell a support run on one model from a support run on another.
+    """
+    if uses_model:
+        return getattr(strategy, "model", None)
+    return getattr(strategy, "inherited_model", None)
+
+
 def _prediction_record(window, outcome):
     """One row of ``predictions.jsonl``."""
     return {
@@ -297,9 +328,28 @@ def refresh_summary(out_dir, strategy_name, split, dry_run=False):
     return summary
 
 
+def new_run_dir(root, started, split):
+    """A fresh ``<YYYYmmdd-HHMMSS>_<split>`` folder; ``-2``, ``-3``... when that second is taken.
+
+    Two runs started within the same second (a batch of quick runs, a dry run, a run that
+    fails at once) must never share a folder: the second would overwrite the first.
+    """
+    stamp = f"{started:%Y%m%d-%H%M%S}"
+    root = Path(root)
+    root.mkdir(parents=True, exist_ok=True)
+    suffix = 1
+    while True:
+        name = f"{stamp}_{split}" if suffix == 1 else f"{stamp}-{suffix}_{split}"
+        try:
+            (root / name).mkdir()
+            return root / name
+        except FileExistsError:
+            suffix += 1
+
+
 def run(strategy_name="zero_shot", split="dev", cases=None, limit=None, workers=None,
         effort=None, samples=None, resume=None, results_root=None, dry_run=False,
-        quiet=False, **options):
+        quiet=False, model=None, api_key_env=None, base_url=None, **options):
     """Run ``strategy_name`` over ``split`` and persist the results.
 
     ``strategy_name`` is the name of a folder under ``harness/``, or an already-built
@@ -335,6 +385,14 @@ def run(strategy_name="zero_shot", split="dev", cases=None, limit=None, workers=
             if backup is not None and not quiet:
                 print(f"backup made: {backup.name}")
 
+        # A run started on another view of the window cannot be completed on this one:
+        # its windows were rendered with other fields.
+        if saved and saved.get("view_version") != view.VIEW_VERSION:
+            raise ValueError(
+                f"{out_dir} was started on view {saved.get('view_version')!r}, not the current "
+                f"shared view {view.VIEW_VERSION}: start a new run instead of resuming it"
+            )
+
         # Reuse the stored settings so the completed run stays homogeneous: mixing
         # two efforts (or two sample counts) inside one run would invalidate it.
         if cases is None:
@@ -348,6 +406,19 @@ def run(strategy_name="zero_shot", split="dev", cases=None, limit=None, workers=
             effort = saved["effort"]
         if samples is None and saved.get("samples"):
             samples = saved["samples"]
+        # The model, its key and its endpoint belong to the run too: a resume completes the
+        # run against the model that started it, and refuses to mix in another one.
+        if saved.get("model") and model and model != saved["model"]:
+            raise ValueError(
+                f"{out_dir} was started with model {saved['model']!r}, not {model!r}: "
+                "a resumed run must keep its model"
+            )
+        if model is None and saved.get("model"):
+            model = saved["model"]
+        if api_key_env is None and saved.get("api_key_env"):
+            api_key_env = saved["api_key_env"]
+        if base_url is None and saved.get("base_url"):
+            base_url = saved["base_url"]
 
         started = datetime.now()
         if saved.get("started_at"):
@@ -357,8 +428,7 @@ def run(strategy_name="zero_shot", split="dev", cases=None, limit=None, workers=
                 pass
     else:
         started = datetime.now()
-        out_dir = run_root(strategy_name, results_root) / f"{started:%Y%m%d-%H%M%S}_{split}"
-        out_dir.mkdir(parents=True, exist_ok=True)
+        out_dir = new_run_dir(run_root(strategy_name, results_root), started, split)
         if workers is None:
             workers = 1
 
@@ -366,7 +436,17 @@ def run(strategy_name="zero_shot", split="dev", cases=None, limit=None, workers=
         options["reasoning_effort"] = effort
     if samples is not None:
         options["n_samples"] = samples
-    strategy = strategy_instance or harness_registry.load_strategy(strategy_name, **options)
+    # The model belongs to the run: it is passed to the strategy as its own settings, and
+    # kept out of ``options`` (which is serialised, and a Settings is not JSON).
+    run_settings = (
+        config.settings_for(model=model, api_key_env=api_key_env, base_url=base_url)
+        if model or api_key_env or base_url
+        else None
+    )
+    if strategy_instance is None:
+        strategy = harness_registry.load_strategy(strategy_name, settings=run_settings, **options)
+    else:
+        strategy = strategy_instance
 
     windows = select_windows(split, cases=cases, limit=limit)
     if not windows:
@@ -405,6 +485,7 @@ def run(strategy_name="zero_shot", split="dev", cases=None, limit=None, workers=
 
     run_info = {
         "strategy": strategy.name,
+        "view_version": view.VIEW_VERSION,
         "split": split,
         "cases": cases,
         "limit": limit,
@@ -414,7 +495,9 @@ def run(strategy_name="zero_shot", split="dev", cases=None, limit=None, workers=
         "n_failed": summary["errors"],
         "resumed": resume is not None,
         "dry_run": dry_run,
-        "model": None if (dry_run or not uses_model) else config.get_settings().model,
+        "model": None if dry_run else _recorded_model(strategy, uses_model),
+        "api_key_env": api_key_env if run_settings is not None else None,
+        "base_url": base_url if run_settings is not None else None,
         "effort": None if (dry_run or not uses_model) else getattr(strategy, "reasoning_effort", None),
         "samples": getattr(strategy, "n_samples", getattr(strategy, "k", None)),
         "temperature": None if (dry_run or not uses_model) else getattr(strategy, "temperature", None),
@@ -458,6 +541,9 @@ def main(argv=None):
         results_root=args.results_root,
         dry_run=args.dry_run,
         quiet=args.quiet,
+        model=args.model,
+        api_key_env=args.api_key_env,
+        base_url=args.base_url,
     )
     if not args.quiet:
         print(f"\nResults written to {outcome['out_dir']}")

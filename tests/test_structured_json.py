@@ -82,20 +82,20 @@ def test_the_whole_user_prompt_is_one_json_document(monkeypatch):
     content = captured["messages"][-1]["content"].strip()
     assert content.startswith("{") and content.endswith("}")
     payload = json.loads(content)
-    assert payload["patient_state"] == window.input
+    assert payload["patient_state"] == prompting.render_case(window.input)
 
 
-def test_no_prose_leaks_into_the_prompt(monkeypatch):
+def test_the_patient_state_is_the_shared_rendering(monkeypatch):
+    """Only the wrapper is JSON: the window is the same text every strategy sends."""
     captured = _patch_llm(monkeypatch, "b")
     window = dataset.load_split("test", limit=1)[0]
 
     harness_registry.load_strategy("structured_json").predict(window)
 
-    content = captured["messages"][-1]["content"]
-    assert "is undergoing" not in content
-    assert prompting.render_case(window.input) not in content
+    payload = json.loads(captured["messages"][-1]["content"])
+    assert payload["patient_state"] == prompting.render_case(window.input)
     for field in dataset.IDENTIFIER_FIELDS:
-        assert field not in content
+        assert field not in captured["messages"][-1]["content"]
 
 
 def test_indent_pretty_prints_the_prompt(monkeypatch):
@@ -106,7 +106,7 @@ def test_indent_pretty_prints_the_prompt(monkeypatch):
 
     content = captured["messages"][-1]["content"]
     assert "\n  " in content
-    assert json.loads(content)["patient_state"] == window.input
+    assert json.loads(content)["patient_state"] == prompting.render_case(window.input)
 
 
 def test_asks_for_the_same_generation_settings_as_zero_shot(monkeypatch):
@@ -133,4 +133,6 @@ def test_same_system_prompt_as_zero_shot(monkeypatch):
 
     assert prose_messages[0] == json_messages[0]
     assert prompting.render_case(window.input) in prose_messages[-1]["content"]
-    assert json.loads(json_messages[-1]["content"])["patient_state"] == window.input
+    assert json.loads(json_messages[-1]["content"])["patient_state"] == prompting.render_case(
+        window.input
+    )

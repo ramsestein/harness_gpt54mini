@@ -39,13 +39,14 @@ Recognised environment variables
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 __all__ = [
     "DEFAULT_MODEL",
     "DEFAULT_TEMPERATURE",
     "DEFAULT_REASONING_EFFORT",
+    "DEFAULT_API_KEY_ENV",
     "PROJECT_ROOT",
     "DATASET_DIR",
     "DATA_DIR",
@@ -55,11 +56,16 @@ __all__ = [
     "RESULTS_DIR",
     "TESTS_DIR",
     "Settings",
+    "api_key",
     "load_env",
     "get_settings",
+    "settings_for",
 ]
 
 DEFAULT_MODEL = "gpt-5.4-mini"
+
+#: The variable the project's own key lives in; other models use their own variable.
+DEFAULT_API_KEY_ENV = "OPENAI_API_KEY"
 
 #: Deterministic sampling: the project always asks for temperature 0.
 DEFAULT_TEMPERATURE = 0.0
@@ -169,3 +175,36 @@ def get_settings():
         temperature=_env_optional_float("ANESLLM_TEMPERATURE", DEFAULT_TEMPERATURE),
         reasoning_effort=_env_optional_str("ANESLLM_REASONING_EFFORT", DEFAULT_REASONING_EFFORT),
     )
+
+
+def api_key(env_name=None):
+    """The key held in ``env_name`` (default: the project's variable), after loading ``.env``.
+
+    Raises ``KeyError`` when the variable is missing or empty, so a run against another
+    model fails before spending anything instead of halfway through the split.
+    """
+    get_settings()  # loads .env once, so every variable is already in the environment
+    name = env_name or DEFAULT_API_KEY_ENV
+    value = os.environ.get(name)
+    if not value:
+        raise KeyError(f"no API key in {name}: add it to .env or the environment")
+    return value
+
+
+def settings_for(model=None, api_key_env=None, base_url=None):
+    """The project settings with another model, key or endpoint -- never the globals.
+
+    The model belongs to the *run*, not to the strategy: a strategy takes its generation
+    settings from here, so the same strategy code runs against any model. Only what is
+    given is changed; the rest (timeout, retries, temperature, effort) keeps the project
+    configuration.
+    """
+    settings = get_settings()
+    changes = {}
+    if model:
+        changes["model"] = model
+    if api_key_env:
+        changes["api_key"] = api_key(api_key_env)
+    if base_url:
+        changes["base_url"] = base_url
+    return replace(settings, **changes) if changes else settings

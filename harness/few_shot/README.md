@@ -7,7 +7,8 @@ with the adjustment the clinician actually made.
 ## Similarity
 
 - Search space: the whole `train` split (80,933 windows).
-- A window is represented by its **numeric input features** (234): standardised
+- A window is represented by the **numeric fields of the shared view** (`src/view.py`,
+  234 before the shared view): standardised
   with the train mean/std, missing values imputed with the train mean, Euclidean
   distance.
 - **The labels never take part in the similarity.** `result_1`, `result_aux` and

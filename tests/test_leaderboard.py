@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from src import config, dataset, leaderboard, results
+from src import config, dataset, leaderboard, results, view
 
 
 def _summary(split="dev", n=4, real=0.5, first=0.75, plausible=None, dry_run=False):
@@ -55,13 +55,13 @@ def _scored(window_id, action, real, case_id=None):
 
 
 def _write_run(root, group, strategy, run_id, summary, predictions=None, settings=None):
-    """Build one run folder the way the launcher writes it."""
+    """Build one run folder the way the launcher writes it (on the current shared view)."""
     base = Path(root) / (Path("control") / strategy if group == "control" else strategy)
     run_dir = base / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
-    if settings is not None:
-        (run_dir / "run.json").write_text(json.dumps(settings), encoding="utf-8")
+    settings = {"view_version": view.VIEW_VERSION, **(settings or {})}
+    (run_dir / "run.json").write_text(json.dumps(settings), encoding="utf-8")
     if predictions is not None:
         results.write_predictions(run_dir / "predictions.jsonl", predictions)
     return run_dir
@@ -140,13 +140,13 @@ def test_a_row_carries_the_three_agreements(tmp_path):
     assert float(row["agreement_result_real"]) == 0.3
     assert float(row["agreement_result_1"]) == 0.5
     assert float(row["agreement_result_plausible"]) == 0.8
-    assert row["run_dir"] == str(run_dir)
+    assert "run_dir" not in row  # the table does not point at folders either
 
 
 def test_the_table_leaves_the_run_bookkeeping_out():
-    for dropped in ("run_id", "n_windows", "n_scored"):
+    for dropped in ("run_id", "n_windows", "n_scored", "run_dir"):
         assert dropped not in leaderboard.COLUMNS
-    for kept in ("effort", "k", "group", "strategy", "split", "errors", "run_dir"):
+    for kept in ("effort", "k", "group", "strategy", "split", "errors"):
         assert kept in leaderboard.COLUMNS
 
 
@@ -304,9 +304,10 @@ def test_the_backfill_ignores_rows_without_an_action(tmp_path):
 # --------------------------------------------------------------------------- #
 
 
-def test_the_table_has_one_row_per_run(tmp_path):
-    _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary())
-    _write_run(tmp_path, "harness", "zero_shot", "20261008-130000_dev", _summary())
+def test_the_table_has_one_row_per_configuration(tmp_path):
+    """Two attempts at the same configuration are one experiment: the newest row wins."""
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary(real=0.1))
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-130000_dev", _summary(real=0.9))
     _write_run(tmp_path, "control", "human", "20261008-121000_test", _summary(split="test"))
 
     rows = leaderboard.collect_rows(tmp_path)
@@ -314,8 +315,146 @@ def test_the_table_has_one_row_per_run(tmp_path):
     assert [(row["strategy"], row["split"]) for row in rows] == [
         ("human", "test"),
         ("zero_shot", "dev"),
-        ("zero_shot", "dev"),
     ]
+    assert [float(row["agreement_result_real"]) for row in rows] == [0.5, 0.9]
+
+
+def test_every_run_can_still_be_read(tmp_path):
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary(real=0.1))
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-130000_dev", _summary(real=0.9))
+
+    rows = leaderboard.collect_rows(tmp_path, latest_only=False)
+
+    assert [float(row["agreement_result_real"]) for row in rows] == [0.1, 0.9]
+
+
+def test_a_different_effort_or_k_is_a_different_configuration(tmp_path):
+    """Collapsing must not swallow the runs that answer a different question."""
+    _write_run(tmp_path, "harness", "few_shot", "20261008-120000_dev", _summary(real=0.1),
+               settings={"effort": "low", "k": 5})
+    _write_run(tmp_path, "harness", "few_shot", "20261008-130000_dev", _summary(real=0.2),
+               settings={"effort": "high", "k": 5})
+    _write_run(tmp_path, "harness", "few_shot", "20261008-140000_dev", _summary(real=0.3),
+               settings={"effort": "low", "k": 10})
+    _write_run(tmp_path, "harness", "few_shot", "20261008-150000_dev", _summary(split="test"),
+               settings={"effort": "low", "k": 5})
+
+    rows = leaderboard.collect_rows(tmp_path)
+
+    assert [float(row["agreement_result_real"]) for row in rows] == [0.1, 0.2, 0.3, 0.5]
+    assert len(rows) == 4
+
+
+def test_the_run_timestamp_is_the_run_id(tmp_path):
+    assert leaderboard.run_timestamp(Path("20261008-120000_dev")) == "20261008-120000"
+    assert leaderboard.run_timestamp(Path("odd-folder")) == "odd-folder"
+
+
+def test_two_rows_are_the_same_experiment_when_group_strategy_model_split_effort_and_k_match():
+    base = {"model": "gpt-5.4-mini", "split": "test", "effort": None, "k": None}
+
+    key = leaderboard.run_key("control", "xgboost", base)
+
+    assert key == ("control", "xgboost", "gpt-5.4-mini", "test", None, None, None)
+    assert key != leaderboard.run_key("control", "xgboost", {**base, "k": 10})
+    assert key != leaderboard.run_key("harness", "xgboost", base)
+
+
+def test_the_same_strategy_on_two_models_is_two_experiments():
+    """Without the model in the key, one model's run would replace the other's row."""
+    base = {"split": "test", "effort": "high", "k": None}
+
+    small = leaderboard.run_key("harness", "zero_shot", {**base, "model": "gpt-5.4-mini"})
+    big = leaderboard.run_key("harness", "zero_shot", {**base, "model": "gpt-5.4-pro"})
+
+    assert small != big
+
+
+def test_the_table_carries_the_model_column():
+    assert "model" in leaderboard.COLUMNS
+
+
+def test_the_row_reads_the_model_from_the_run(tmp_path):
+    run_dir = _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary(),
+                         settings={"model": "gpt-5.4-pro", "effort": None})
+
+    row = leaderboard.run_row("harness", "zero_shot", run_dir)
+
+    assert row["model"] == "gpt-5.4-pro"
+
+
+def test_a_run_without_a_model_has_no_model(tmp_path):
+    """A strategy that calls no model (the controls) has nothing to record there."""
+    run_dir = _write_run(tmp_path, "control", "human", "20261008-120000_dev", _summary(),
+                         settings={"model": None})
+
+    assert leaderboard.run_row("control", "human", run_dir)["model"] is None
+
+
+def test_the_models_only_table_keeps_the_other_models(tmp_path):
+    base = {"effort": None, "split": "dev"}
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary(),
+               settings={**base, "model": "gpt-5.4-mini"})
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-130000_dev", _summary(),
+               settings={**base, "model": "gpt-5.4-pro"})
+    _write_run(tmp_path, "control", "human", "20261008-140000_dev", _summary(),
+               settings={**base, "model": None})
+
+    rows = leaderboard.collect_rows(tmp_path, models_only=True)
+
+    assert [row["model"] for row in rows] == ["gpt-5.4-pro"]
+
+
+def test_one_model_can_be_selected_by_name(tmp_path):
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-130000_dev", _summary(),
+               settings={"model": "gpt-5.4-pro", "effort": None})
+
+    rows = leaderboard.collect_rows(tmp_path, model="gpt-5.4-pro")
+
+    assert len(rows) == 1
+    assert leaderboard.collect_rows(tmp_path, model="gpt-5.4-mini") == []
+
+
+def test_the_models_only_table_gets_its_own_file(tmp_path):
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-130000_dev", _summary(),
+               settings={"model": "gpt-5.4-pro", "effort": None})
+
+    path = leaderboard.write_leaderboard(tmp_path, models_only=True)
+
+    assert Path(path) == tmp_path / leaderboard.MODELS_TABLE_NAME
+    assert Path(path).name == "leaderboard_models.csv"
+    rows = _read_table(path)
+    assert [row["model"] for row in rows] == ["gpt-5.4-pro"]
+
+
+def test_the_main_table_still_holds_every_model(tmp_path):
+    for run_id, model in (("20261008-120000_dev", "gpt-5.4-mini"),
+                          ("20261008-130000_dev", "gpt-5.4-pro")):
+        _write_run(tmp_path, "harness", "zero_shot", run_id, _summary(),
+                   settings={"model": model, "effort": None})
+
+    rows = _read_table(leaderboard.write_leaderboard(tmp_path))
+
+    assert {row["model"] for row in rows} == {"gpt-5.4-mini", "gpt-5.4-pro"}
+
+
+def test_the_cli_exposes_the_model_filters():
+    args = leaderboard.build_parser().parse_args(["--models-only", "--model", "x"])
+
+    assert args.models_only is True
+    assert args.model == "x"
+
+
+def test_the_latest_per_configuration_keeps_the_newest(tmp_path):
+    entries = [
+        ("harness", "cot", "20261008-130000", {"split": "dev", "effort": None, "k": None}),
+        ("harness", "cot", "20261008-120000", {"split": "dev", "effort": None, "k": None}),
+    ]
+
+    kept = leaderboard.latest_per_configuration(entries)
+
+    assert len(kept) == 1
+    assert kept[0][2] == "20261008-130000"
 
 
 def test_the_table_is_ordered_by_group_strategy_and_run(tmp_path):
@@ -328,17 +467,7 @@ def test_the_table_is_ordered_by_group_strategy_and_run(tmp_path):
     assert names == [
         ("harness", "cot"),
         ("harness", "zero_shot"),
-        ("harness", "zero_shot"),
     ]
-
-
-def test_the_older_run_of_a_strategy_comes_first(tmp_path):
-    _write_run(tmp_path, "harness", "zero_shot", "20261008-130000_dev", _summary(real=0.9))
-    _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary(real=0.1))
-
-    rows = leaderboard.collect_rows(tmp_path)
-
-    assert [float(row["agreement_result_real"]) for row in rows] == [0.1, 0.9]
 
 
 def test_write_leaderboard_writes_the_csv(tmp_path):
@@ -363,22 +492,37 @@ def test_write_leaderboard_accepts_another_output(tmp_path):
     assert Path(path) == target and target.is_file()
 
 
+def test_write_leaderboard_can_keep_every_run(tmp_path):
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary(real=0.1))
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-130000_dev", _summary(real=0.9))
+
+    rows = _read_table(leaderboard.write_leaderboard(tmp_path, latest_only=False))
+
+    assert len(rows) == 2
+
+
 # --------------------------------------------------------------------------- #
 # The real folder
 # --------------------------------------------------------------------------- #
 
 
 def test_the_real_results_folder_produces_a_table(tmp_path, repo_root):
-    path = leaderboard.write_leaderboard(config.RESULTS_DIR, output=tmp_path / "leaderboard.csv")
+    # every view: the folder may hold only runs older than the current shared view
+    path = leaderboard.write_leaderboard(config.RESULTS_DIR, output=tmp_path / "leaderboard.csv",
+                                         view_version=leaderboard.ALL_VIEWS)
 
     rows = _read_table(path)
 
     assert rows, "the results folder holds runs"
     assert {row["group"] for row in rows} == {"harness", "control"}
+    assert "run_dir" not in rows[0]
+    keys = []
     for row in rows:
         assert row["strategy"]
         assert row["split"] in dataset.SPLITS
-        assert Path(row["run_dir"]).is_dir()
+        keys.append((row["group"], row["strategy"], row["model"], row["split"], row["effort"],
+                     row["k"], row["view"]))
+    assert len(keys) == len(set(keys))  # one row per configuration (the model is part of it)
     # the language strategies ran with a reasoning effort; the retrieval ones with a k
     assert any(row["effort"] for row in rows)
     assert any(row["k"] for row in rows)
@@ -393,8 +537,36 @@ def test_the_cli_defaults_to_the_results_folder():
     args = leaderboard.build_parser().parse_args([])
     assert Path(args.results_root) == Path(config.RESULTS_DIR)
     assert args.output is None
+    assert args.all_runs is False
 
 
 def test_the_cli_accepts_an_explicit_root_and_output():
     args = leaderboard.build_parser().parse_args(["--results-root", "x", "--output", "y.csv"])
     assert (args.results_root, args.output) == ("x", "y.csv")
+
+
+# --------------------------------------------------------------------------- #
+# The shared view
+# --------------------------------------------------------------------------- #
+
+
+def test_the_table_only_keeps_the_runs_of_the_current_view(tmp_path):
+    """Runs made on an older view saw other fields: they never share a table with new ones."""
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary(real=0.1),
+               settings={"view_version": None})
+    _write_run(tmp_path, "harness", "zero_shot", "20261009-120000_dev", _summary(real=0.9))
+
+    rows = leaderboard.collect_rows(tmp_path)
+
+    assert [float(row["agreement_result_real"]) for row in rows] == [0.9]
+    assert rows[0]["view"] == view.VIEW_VERSION
+
+
+def test_every_view_can_still_be_listed(tmp_path):
+    _write_run(tmp_path, "harness", "zero_shot", "20261008-120000_dev", _summary(real=0.1),
+               settings={"view_version": None})
+    _write_run(tmp_path, "harness", "zero_shot", "20261009-120000_dev", _summary(real=0.9))
+
+    rows = leaderboard.collect_rows(tmp_path, view_version=leaderboard.ALL_VIEWS)
+
+    assert sorted(float(row["agreement_result_real"]) for row in rows) == [0.1, 0.9]

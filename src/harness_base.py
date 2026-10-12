@@ -33,6 +33,7 @@ of ``Strategy`` whose ``name`` matches the folder name.
 
 from __future__ import annotations
 
+import threading
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
@@ -78,17 +79,23 @@ class Strategy(ABC):
     uses_model: bool = True
 
     def __init__(self, model=_UNSET, temperature=_UNSET, reasoning_effort=_UNSET,
-                 model_options=None, **options):
-        settings = config.get_settings()
-        self.model = settings.model if model is _UNSET or model is None else model
-        self.temperature = settings.temperature if temperature is _UNSET else temperature
+                 model_options=None, settings=None, **options):
+        inherited = config.get_settings()
+        #: Per-run settings (another model, key or endpoint); ``None`` = the project ones.
+        #: The model is a property of the run, so the same strategy runs against any model.
+        self.settings = settings
+        effective = inherited if settings is None else settings
+        self.model = effective.model if model is _UNSET or model is None else model
+        self.temperature = effective.temperature if temperature is _UNSET else temperature
         if reasoning_effort is _UNSET:
-            reasoning_effort = settings.reasoning_effort
+            reasoning_effort = effective.reasoning_effort
         self.reasoning_effort = _normalise_effort(reasoning_effort)
         #: Extra keyword arguments for the model call.
         self.model_options = dict(model_options or {})
         #: Strategy-specific options; never forwarded to the model.
         self.options = options
+        self._client = None
+        self._client_lock = threading.Lock()
 
     def generation_options(self):
         """Model-call keyword arguments derived from the generation settings."""
@@ -98,9 +105,27 @@ class Strategy(ABC):
             "reasoning_effort": self.reasoning_effort,
         }
 
+    def llm_client(self):
+        """The client for this strategy's own settings, or ``None`` for the project ones.
+
+        ``None`` means the calls go through the shared helper, so the project's single client
+        is reused. A run against another model gets its own client, built once and shared
+        by all its windows (the harness calls windows in parallel).
+        """
+        if self.settings is None:
+            return None
+        with self._client_lock:
+            if self._client is None:
+                self._client = llm.LLMClient(settings=self.settings)
+            return self._client
+
     def ask(self, messages):
         """Make one model call with this strategy's generation settings."""
-        return llm.complete_messages(messages, **self.generation_options(), **self.model_options)
+        options = {**self.generation_options(), **self.model_options}
+        client = self.llm_client()
+        if client is None:
+            return llm.complete_messages(messages, **options)
+        return client.complete_messages(messages, **options)
 
     def prediction_from(self, window, response, action):
         """Build the standard ``Prediction``, including the generation metadata."""

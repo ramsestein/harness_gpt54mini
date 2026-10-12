@@ -6,9 +6,10 @@ together in a single JSON object instead of prose.
 
 - `prompt.json` (this folder) holds the *instruction half*: `role`, `task`,
   `patient_state_notes`, `options`, `option_meanings` and `output_format`.
-- The strategy adds `patient_state` = the sanitised window, so the window is a
-  **nested JSON object**, not a string, and dumps the result with
-  `json.dumps(..., ensure_ascii=False)` (sorted by insertion order, deterministic).
+- The strategy adds `patient_state` = `src.prompting.render_case(window.input)`, the
+  **same rendering every strategy sends** (the shared view of `src.view`). Only the
+  wrapper is JSON: the strategy varies the prompt format, never the information. The
+  result is dumped with `json.dumps(..., ensure_ascii=False)` (deterministic).
 - `indent` can be set to pretty-print the prompt (more tokens, easier to read).
 - Output parsing: identical to `zero_shot` (`src.parsing.parse_action`).
 - The system message is the same as `zero_shot`; only the user message differs.
@@ -22,7 +23,7 @@ The user message therefore looks like:
   "options": { "a": "increase_hypnotic", "b": "reduce_hypnotic", "c": "increase_opioid",
                "d": "reduce_opioid", "e": "no_action" },
   "output_format": "Respond with exactly one character: the letter of your choice (a, b, c, d, or e). Output nothing else.",
-  "patient_state": { "map_current": 77.0, "bis_trend": "falling", "vitals_json": { "...": "..." } }
+  "patient_state": "A 69-year-old male patient (...) is undergoing ...\nCurrent vitals: ...\n\nFull monitoring record (dataset field codes):\n..."
 }
 ```
 

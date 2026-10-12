@@ -31,15 +31,22 @@ if __package__ in (None, ""):  # executed as a script, e.g. ``python src/control
 
 from harness import run as harness_run  # noqa: E402
 from src import config, dataset, leaderboard  # noqa: E402
-from src.control import baselines, persistence, retrieval_majority, sim_normality  # noqa: E402
+from src.control import (  # noqa: E402
+    baselines,
+    persistence,
+    retrieval_majority,
+    sim_normality,
+    xgboost_baseline,
+)
 
 #: Controls a bare invocation runs: the cheap ones (no corpus, no simulation).
 DEFAULT_NAMES = [*baselines.BASELINE_NAMES, persistence.NAME]
 
 #: Controls that need something extra, so they are opt-in through ``--only``:
 #: ``retrieval_majority`` loads the few-shot index (175 MB),
+#: ``xgboost`` needs a model fitted beforehand (``src.control.train_xgboost``),
 #: ``sim_normality`` spends seconds of CPU per window on the simulator.
-OPT_IN_NAMES = [retrieval_majority.NAME, sim_normality.NAME]
+OPT_IN_NAMES = [retrieval_majority.NAME, xgboost_baseline.NAME, sim_normality.NAME]
 
 
 def default_names():
@@ -65,6 +72,8 @@ def control_strategy(name, seed=0, **options):
         return sim_normality.SimNormalityStrategy(**options)
     if name == retrieval_majority.NAME:
         return retrieval_majority.RetrievalMajorityStrategy(**options)
+    if name == xgboost_baseline.NAME:
+        return xgboost_baseline.XGBoostStrategy(**options)
     return baselines.build(name, seed=seed, **options)
 
 

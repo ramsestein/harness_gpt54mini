@@ -1,0 +1,1052 @@
+{
+  "sources": {
+    "nimmo2019_tiva": {
+      "file": "sources/nimmo2019_tiva.pdf",
+      "columns": 2,
+      "split": 298,
+      "short": "Nimmo et al., Anaesthesia 2019 (AAGBI/SIVA TIVA guidelines)",
+      "citation": "Nimmo AF, Absalom AR, Bagshaw O, et al. Guidelines for the safe practice of total intravenous anaesthesia (TIVA): Joint Guidelines from the Association of Anaesthetists and the Society for Intravenous Anaesthesia. Anaesthesia 2019; 74: 211-224.",
+      "doi": "10.1111/anae.14428",
+      "url": "https://doi.org/10.1111/anae.14428",
+      "licence": "CC BY-NC-ND 4.0 (stated on page 1)",
+      "accessed": "2026-10-09",
+      "file_sha256": "ba1397563e54cd67dbebf2a3252a7d57e0f61bc76a3e088d2545abdc9c8f1c0f"
+    },
+    "nice_htg292": {
+      "file": "sources/nice_htg292_depth_monitors.pdf",
+      "columns": 1,
+      "short": "NICE HTG292 (replaces DG6), 2012",
+      "citation": "National Institute for Health and Care Excellence. Depth of anaesthesia monitors - Bispectral Index (BIS), E-Entropy and Narcotrend-Compact M. HealthTech guidance HTG292 (replaces DG6). Published 21 November 2012.",
+      "url": "https://www.nice.org.uk/guidance/htg292",
+      "licence": "(c) NICE, all rights reserved, subject to NICE Notice of rights (reuse with acknowledgement)",
+      "accessed": "2026-10-09",
+      "file_sha256": "b681c1e2728d3cdf3e70d23f758fa4227f8a7a16f4ad4661670b14cd43a6cd4f"
+    },
+    "aldecoa2024_esaic": {
+      "file": "sources/aldecoa2024_esaic_delirium.pdf",
+      "columns": 2,
+      "short": "Aldecoa et al., Eur J Anaesthesiol 2024 (ESAIC postoperative delirium guideline)",
+      "citation": "Aldecoa C, Bettelli G, Bilotta F, et al. Update of the European Society of Anaesthesiology and Intensive Care Medicine evidence-based and consensus-based guideline on postoperative delirium in adult patients. Eur J Anaesthesiol 2024; 41: 81-108.",
+      "doi": "10.1097/EJA.0000000000001876",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10763721/",
+      "licence": "Open access (CC BY-NC-ND 4.0 per PMC record; verify on the publisher page)",
+      "accessed": "2026-10-09",
+      "file_sha256": "cd2fcd7f694f43e9672c74498d12a18c4d18d359b287e90707f1f195b59de959"
+    },
+    "saugel2024_poqi": {
+      "file": "sources/saugel2024_poqi_arterial_pressure.pdf",
+      "columns": 2,
+      "split": 305,
+      "short": "Saugel et al., Br J Anaesth 2024 (POQI arterial pressure consensus)",
+      "citation": "Saugel B, Fletcher N, Gan TJ, Grocott MPW, Myles PS, Sessler DI; POQI XI Workgroup Members. PeriOperative Quality Initiative (POQI) international consensus statement on perioperative arterial pressure management. Br J Anaesth 2024; 133: 264-276.",
+      "doi": "10.1016/j.bja.2024.04.046",
+      "url": "https://doi.org/10.1016/j.bja.2024.04.046",
+      "licence": "CC BY (stated on page 1)",
+      "accessed": "2026-10-09",
+      "file_sha256": "36c8064efc2ae8b86250507a455e1068f5e95c6581c313ff01e1badda3bd2914"
+    },
+    "fda_diprivan": {
+      "file": "sources/fda_diprivan_label_2022.pdf",
+      "columns": 1,
+      "short": "DIPRIVAN (propofol) US prescribing information, 2022",
+      "citation": "Fresenius Kabi USA. DIPRIVAN (propofol) injectable emulsion, for intravenous use. US prescribing information, NDA 019627 (label 019627s069, Reference ID 5038849), 2022.",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf",
+      "licence": "US FDA approved labeling, publicly available",
+      "accessed": "2026-10-09",
+      "file_sha256": "9966f71f6e7262bc9b7378998a8c6873bf6dfca85065953e103cba9f8f6674e8"
+    },
+    "vitaldb_physionet": {
+      "file": "sources/vitaldb_physionet_v1.0.0.pdf",
+      "columns": 1,
+      "short": "Lee & Jung, VitalDB v1.0.0 (PhysioNet)",
+      "citation": "Lee H, Jung C. VitalDB, a high-fidelity multi-parameter vital signs database in surgical patients (version 1.0.0). PhysioNet, 2022.",
+      "doi": "10.13026/czw8-9p62",
+      "url": "https://physionet.org/content/vitaldb/1.0.0/",
+      "licence": "CC BY 4.0 (stated on the PhysioNet page)",
+      "accessed": "2026-10-09 (page printed to PDF)",
+      "file_sha256": "dfd99196d684778e1b646b95329789f7902aea322251257f1b8bb07352da4fec"
+    },
+    "fda_ultiva": {
+      "file": "sources/fda_ultiva_label_2004.pdf",
+      "columns": 1,
+      "short": "ULTIVA (remifentanil) US prescribing information, 2004",
+      "citation": "Abbott Laboratories. ULTIVA (remifentanil hydrochloride) for injection. US prescribing information, NDA 20-630/S-005, 2004.",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/20630se5-005_ultiva_lbl.pdf",
+      "licence": "US FDA approved labeling, publicly available",
+      "accessed": "2026-10-09",
+      "note": "2004 label; a more recent label exists under NDA 020630 on Drugs@FDA",
+      "file_sha256": "80265b32dc075389bb024889ee8c13364822ea3201a30fa5709697db52e07926"
+    }
+  },
+  "fragments": [
+    {
+      "id": "vdb_01",
+      "source": "vitaldb_physionet",
+      "axis": "data",
+      "section": "Methods (data acquisition)",
+      "page": 3,
+      "start": "Data from the brain monitor (BIS Vista",
+      "end": "infusion histories of various intravenous drugs.",
+      "text": "Data from the brain monitor (BIS VistaTM, Medtronic, Dublin, Ireland) were recorded in most patients undergoing general anesthesia and sedation/analgesia. Data from the target-controlled infusion pumps (Orchestra® Base Primea with module DPS, Fresenius Kabi AG, Bad Homburg, Germany) were recorded in all patients undergoing intravenous anesthesia and balanced anesthesia. The infusion pump data also includes infusion histories of various intravenous drugs.",
+      "text_raw": "Data from the brain monitor (BIS VistaTM, Medtronic, Dublin, Ireland) were recorded in most patients undergoing general anesthesia and sedation/analgesia. Data from the target-controlled infusion pumps (Orchestra® Base Primea with module DPS, Fresenius Kabi AG, Bad Homburg, Germany) were recorded in all patients undergoing intravenous anesthesia and balanced anesthesia. The infusion pump data also includes infusion histories of various intravenous drugs.",
+      "glyph_repairs": [],
+      "text_sha256": "151b2521545ff7e8e45db2c80346cfc3a902b86f9a6bb75c7858ac495236d086",
+      "text_raw_sha256": "151b2521545ff7e8e45db2c80346cfc3a902b86f9a6bb75c7858ac495236d086",
+      "char_start": 3646,
+      "char_end": 4104,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_01",
+      "source": "nimmo2019_tiva",
+      "axis": "propofol_pkpd",
+      "section": "Target-controlled infusions",
+      "page": 3,
+      "column": "R",
+      "start": "A TCI pump contains a microprocessor",
+      "end": "Marsh [4] and Schnider [5, 6].",
+      "text": "A TCI pump contains a microprocessor programmed with pharmacokinetic models for relevant drugs. The user selects the drug and pharmacokinetic model to be used by that TCI pump and inputs the patient characteristics (covariates) such as body weight and age, and the target plasma or ‘brain’ (effect-site) concentration, with the pump determining the initial bolus and subsequent infusion rates. The two most commonly used adult propofol models are Marsh [4] and Schnider [5, 6].",
+      "text_raw": "A TCI pump contains a microprocessor programmed with pharmacokinetic models for relevant drugs. The user selects the drug and pharmacokinetic model to be used by that TCI pump and inputs the patient characteristics (covariates) such as body weight and age, and the target plasma or ‘brain’ (effect-site) concentration, with the pump determining the initial bolus and subsequent infusion rates. The two most commonly used adult propofol models are Marsh [4] and Schnider [5, 6].",
+      "glyph_repairs": [],
+      "text_sha256": "81188624dfc474c9067f36b4067e4140b41668837af46c02a3702a089d58d8da",
+      "text_raw_sha256": "81188624dfc474c9067f36b4067e4140b41668837af46c02a3702a089d58d8da",
+      "char_start": 121,
+      "char_end": 598,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_02",
+      "source": "nimmo2019_tiva",
+      "axis": "propofol_pkpd",
+      "section": "How relevant is the pharmacokinetic model to my patient?",
+      "page": 3,
+      "column": "R",
+      "start": "Plasma drug concentrations in individual patients are",
+      "end": "cannot be assumed to be accurate.",
+      "text": "Plasma drug concentrations in individual patients are unlikely to be identical to those predicted by the pharmacokinetic model and displayed by the TCI pump. The mean difference between estimated and measured concentrations is usually less than 25% [10], but, if the patient differs from the population in which the model was developed, the difference may be considerably greater. In such circumstances, TCI pumps can be a useful tool for titrating a propofol infusion to effect (clinical effect or the desired effect on the EEG as measured by a pEEG monitor), but the predicted propofol concentration cannot be assumed to be accurate.",
+      "text_raw": "Plasma drug concentrations in individual patients are unlikely to be identical to those predicted by the pharmacokinetic model and displayed by the TCI pump. The mean difference between estimated and measured concentrations is usually less than 25% [10], but, if the patient differs from the population in which the model was developed, the difference may be considerably greater. In such circumstances, TCI pumps can be a useful tool for titrating a propofol infusion to effect (clinical effect or the desired effect on the EEG as measured by a pEEG monitor), but the predicted propofol concentration cannot be assumed to be accurate.",
+      "glyph_repairs": [],
+      "text_sha256": "d4001d48a516aa671ac5dffa3bb79d15f0cedde47b5647579dc557bd709f7d2d",
+      "text_raw_sha256": "d4001d48a516aa671ac5dffa3bb79d15f0cedde47b5647579dc557bd709f7d2d",
+      "char_start": 1376,
+      "char_end": 2011,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_03",
+      "source": "nimmo2019_tiva",
+      "axis": "propofol_pkpd",
+      "section": "Manual infusions",
+      "page": 4,
+      "column": "L",
+      "start": "It should be remembered that even when using drugs",
+      "end": "with 100% reached after 15–20 min.",
+      "text": "It should be remembered that even when using drugs with the fastest pharmacokinetic profiles, a simple change in an infusion rate is associated with a significant delay before plasma concentrations change appreciably; this lag is even greater for effect-site concentrations and clinical effect. On starting a propofol infusion at a fixed rate without an initial bolus, concentrations rise very slowly and only reach near steady-state conditions after several hours (Fig. 1). If no loading dose is given, then administration by fixed infusion rate will be initially associated with inadequate concentrations. On the other hand, after some time at a fixed infusion rate, the concentrations may rise to excessive levels. Likewise, if the infusion rate is decreased, plasma concentrations will change slowly. In contrast, remifentanil achieves around 75% of steady-state concentration after 5 min, with 100% reached after 15–20 min.",
+      "text_raw": "It should be remembered that even when using drugs with the fastest pharmacokinetic proﬁles, a simple change in an infusion rate is associated with a signiﬁcant delay before plasma concentrations change appreciably; this lag is even greater for effect-site concentrations and clinical effect. On starting a propofol infusion at a ﬁxed rate without an initial bolus, concentrations rise very slowly and only reach near steady-state conditions after several hours (Fig. 1). If no loading dose is given, then administration by ﬁxed infusion rate will be initially associated with inadequate concentrations. On the other hand, after some time at a ﬁxed infusion rate, the concentrations may rise to excessive levels. Likewise, if the infusion rate is decreased, plasma concentrations will change slowly. In contrast, remifentanil achieves around 75% of steady-state concentration after 5 min, with 100% reached after 15–20 min.",
+      "glyph_repairs": [
+        {
+          "pattern": "ﬁ",
+          "replacement": "fi",
+          "count": 5
+        }
+      ],
+      "text_sha256": "f6b7af3de24edd064c8d8ecf3146a33ecd8cbf5d4ce7aa9b77565661653abbba",
+      "text_raw_sha256": "36188daa289bd9e57c4819309c827fc38edae4f52036798088b62ee6bcb0fcc4",
+      "char_start": 736,
+      "char_end": 1659,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_04",
+      "source": "nimmo2019_tiva",
+      "axis": "propofol_pkpd",
+      "section": "Choosing an appropriate target drug concentration for a patient",
+      "page": 4,
+      "column": "R",
+      "start": "A clinical calibration of the individual patient’s response",
+      "end": "the degree of surgical stimulus.",
+      "text": "A clinical calibration of the individual patient’s response to propofol is recommended during induction and maintenance of anaesthesia. The drug concentration achieved should be sufficient to produce loss of consciousness and prevent movement in response to noxious stimuli. However, the concentration should not be excessive, as this may cause marked hypotension and delayed recovery from anaesthesia. There is no plasma or effect-site concentration that is appropriate for all patients. Rather, the concentration required will depend on inter-individual patient variation, other drugs administered and the degree of surgical stimulus.",
+      "text_raw": "A clinical calibration of the individual patient’s response to propofol is recommended during induction and maintenance of anaesthesia. The drug concentration achieved should be sufﬁcient to produce loss of consciousness and prevent movement in response to noxious stimuli. However, the concentration should not be excessive, as this may cause marked hypotension and delayed recovery from anaesthesia. There is no plasma or effect-site concentration that is appropriate for all patients. Rather, the concentration required will depend on inter-individual patient variation, other drugs administered and the degree of surgical stimulus.",
+      "glyph_repairs": [
+        {
+          "pattern": "ﬁ",
+          "replacement": "fi",
+          "count": 1
+        }
+      ],
+      "text_sha256": "0ad3c6948ef9ae7954a5117abe5d8cd2bacaa8a97c86ccdaed514774962c9e2a",
+      "text_raw_sha256": "7d7060ea56fd93755892d09e9774422440adbe43de11e18c7ccdf93ce1aaec80",
+      "char_start": 204,
+      "char_end": 839,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_05",
+      "source": "nimmo2019_tiva",
+      "axis": "propofol_pkpd",
+      "section": "Degree of surgical stimulus",
+      "page": 5,
+      "column": "L",
+      "start": "The brain propofol concentration required for adequate",
+      "end": "will reduce the propofol concentration required.",
+      "text": "The brain propofol concentration required for adequate anaesthesia during surgery is influenced by the magnitude of the surgical stimulus. An effective regional anaesthetic block will reduce the propofol concentration required.",
+      "text_raw": "The brain propofol concentration required for adequate anaesthesia during surgery is inﬂuenced by the magnitude of the surgical stimulus. An effective regional anaesthetic block will reduce the propofol concentration required.",
+      "glyph_repairs": [
+        {
+          "pattern": "ﬂ",
+          "replacement": "fl",
+          "count": 1
+        }
+      ],
+      "text_sha256": "2255b4e29f8c8d7e3a2389183e418abe84525617077e2e264e8010d495a9fcdf",
+      "text_raw_sha256": "ee5958c94b8838931c24916f424369185c00566911dc3c30d5965cff77932571",
+      "char_start": 1285,
+      "char_end": 1511,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_06",
+      "source": "nimmo2019_tiva",
+      "axis": "propofol_pkpd",
+      "section": "Typical target concentrations in routine practice",
+      "page": 5,
+      "column": "R",
+      "start": "During maintenance of anaesthesia, target concentrations of",
+      "end": "are appropriate for older, frail or unwell patients.",
+      "fixes": [
+        {
+          "from": "3.0– 6.0",
+          "to": "3.0–6.0",
+          "reason": "line break after the en dash turned into a space; printed as '3.0–6.0'"
+        }
+      ],
+      "text": "During maintenance of anaesthesia, target concentrations of 3.0–6.0 µg.ml-1 (without opioids) or 2.5–4.0 µg.ml-1 (with opioids) are typical. Higher initial targets may be required for anxious and ‘robust’ individuals, whereas lower targets are appropriate for older, frail or unwell patients.",
+      "text_raw": "During maintenance of anaesthesia, target concentrations of 3.0– 6.0 lg.ml 1 (without opioids) or 2.5–4.0 lg.ml 1 (with opioids) are typical. Higher initial targets may be required for anxious and ‘robust’ individuals, whereas lower targets are appropriate for older, frail or unwell patients.",
+      "glyph_repairs": [
+        {
+          "pattern": "\\blg\\.(?=(?:kg|ml|h|min)\\b)",
+          "replacement": "µg.",
+          "count": 2
+        },
+        {
+          "pattern": "(\\b(?:ml|min|kg|h))\\s1\\b",
+          "replacement": "\\1-1",
+          "count": 2
+        },
+        {
+          "from": "3.0– 6.0",
+          "to": "3.0–6.0",
+          "reason": "line break after the en dash turned into a space; printed as '3.0–6.0'",
+          "kind": "manual, checked against the page image"
+        }
+      ],
+      "text_sha256": "8ad4f1407b7a3c522553ba8d0e3485478233e36d2f42588be268cc41f2ec4ac5",
+      "text_raw_sha256": "8b5ce8964e9338802f3b951408a5e5811367e6437a170820dd3d78efefc1aa55",
+      "char_start": 77,
+      "char_end": 370,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "fda_01",
+      "source": "fda_diprivan",
+      "axis": "propofol_pkpd",
+      "section": "12 Clinical Pharmacology",
+      "page": 22,
+      "start": "As with other rapidly acting intravenous anesthetic agents",
+      "end": "accounting for the rate of induction of anesthesia.",
+      "text": "As with other rapidly acting intravenous anesthetic agents, the half-time of the blood-brain equilibration is approximately 1 to 3 minutes, accounting for the rate of induction of anesthesia.",
+      "text_raw": "As with other rapidly acting intravenous anesthetic agents, the half-time of the blood-brain equilibration is approximately 1 to 3 minutes, accounting for the rate of induction of anesthesia.",
+      "glyph_repairs": [],
+      "text_sha256": "c9f47dd1493ce7ff46e1a4bef069f7bb9f657621d6d060af2e9df5628d8e4dc2",
+      "text_raw_sha256": "c9f47dd1493ce7ff46e1a4bef069f7bb9f657621d6d060af2e9df5628d8e4dc2",
+      "char_start": 946,
+      "char_end": 1137,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "fda_02",
+      "source": "fda_diprivan",
+      "axis": "propofol_pkpd",
+      "section": "12.2 Pharmacodynamics",
+      "page": 22,
+      "start": "Pharmacodynamic properties of propofol are dependent",
+      "end": "in order to assess clinical effects.",
+      "fixes": [
+        {
+          "from": "Steadystate",
+          "to": "Steady-state",
+          "reason": "line-end hyphen removed by pdftotext; printed as 'Steady-/state'"
+        }
+      ],
+      "text": "Pharmacodynamic properties of propofol are dependent upon the therapeutic blood propofol concentrations. Steady-state propofol blood concentrations are generally proportional to infusion rates. Undesirable side effects, such as cardiorespiratory depression, are likely to occur at higher blood concentrations which result from bolus dosing or rapid increases in infusion rates. An adequate interval (3 to 5 minutes) must be allowed between dose adjustments in order to assess clinical effects.",
+      "text_raw": "Pharmacodynamic properties of propofol are dependent upon the therapeutic blood propofol concentrations. Steadystate propofol blood concentrations are generally proportional to infusion rates. Undesirable side effects, such as cardiorespiratory depression, are likely to occur at higher blood concentrations which result from bolus dosing or rapid increases in infusion rates. An adequate interval (3 to 5 minutes) must be allowed between dose adjustments in order to assess clinical effects.",
+      "glyph_repairs": [
+        {
+          "from": "Steadystate",
+          "to": "Steady-state",
+          "reason": "line-end hyphen removed by pdftotext; printed as 'Steady-/state'",
+          "kind": "manual, checked against the page image"
+        }
+      ],
+      "text_sha256": "c8dbb5c240accff6b4143b6c3adf558083e7cffefde78a7a98bc2d942a457fde",
+      "text_raw_sha256": "84c8e2c95b23150172877b519351b8a096b19673a3bca8df688cd7fc9afd17b1",
+      "char_start": 1459,
+      "char_end": 1951,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "fda_03",
+      "source": "fda_diprivan",
+      "axis": "propofol_pkpd",
+      "section": "2.3 Maintenance of General Anesthesia (Adult Patients)",
+      "page": 6,
+      "start": "In adults, anesthesia can be maintained",
+      "end": "can increase the CNS depression induced by propofol.",
+      "text": "In adults, anesthesia can be maintained by administering DIPRIVAN by infusion or intermittent intravenous bolus injection. The patient's clinical response will determine the infusion rate or the amount and frequency of incremental injections Continuous Infusion DIPRIVAN 100 mcg/kg/min to 200 mcg/kg/min administered in a variable rate infusion with 60% to 70% nitrous oxide and oxygen provides anesthesia for patients undergoing general surgery. Maintenance by infusion of DIPRIVAN should immediately follow the induction dose in order to provide satisfactory or continuous anesthesia during the induction phase. During this initial period following the induction dose, higher rates of infusion are generally required (150 mcg/kg/min to 200 mcg/kg/min) for the first 10 minutes to 15 minutes. Infusion rates should subsequently be decreased 30% to 50% during the first half-hour of maintenance. Generally, rates of 50 mcg/kg/min to 100 mcg/kg/min in adults should be achieved during maintenance in order to optimize recovery times. Other drugs that cause CNS depression (hypnotics/sedatives, inhalational anesthetics, and opioids) can increase the CNS depression induced by propofol.",
+      "text_raw": "In adults, anesthesia can be maintained by administering DIPRIVAN by infusion or intermittent intravenous bolus injection. The patient's clinical response will determine the infusion rate or the amount and frequency of incremental injections Continuous Infusion DIPRIVAN 100 mcg/kg/min to 200 mcg/kg/min administered in a variable rate infusion with 60% to 70% nitrous oxide and oxygen provides anesthesia for patients undergoing general surgery. Maintenance by infusion of DIPRIVAN should immediately follow the induction dose in order to provide satisfactory or continuous anesthesia during the induction phase. During this initial period following the induction dose, higher rates of infusion are generally required (150 mcg/kg/min to 200 mcg/kg/min) for the first 10 minutes to 15 minutes. Infusion rates should subsequently be decreased 30% to 50% during the first half-hour of maintenance. Generally, rates of 50 mcg/kg/min to 100 mcg/kg/min in adults should be achieved during maintenance in order to optimize recovery times. Other drugs that cause CNS depression (hypnotics/sedatives, inhalational anesthetics, and opioids) can increase the CNS depression induced by propofol.",
+      "glyph_repairs": [],
+      "text_sha256": "39467dedb4c04181438a2843edc60700c1bf47b96d786459e2365001756c34da",
+      "text_raw_sha256": "39467dedb4c04181438a2843edc60700c1bf47b96d786459e2365001756c34da",
+      "char_start": 2252,
+      "char_end": 3436,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "nice_01",
+      "source": "nice_htg292",
+      "axis": "hypnosis_depth",
+      "section": "4.1 Bispectral Index",
+      "page": 11,
+      "start": "The BIS system uses a disposable",
+      "end": "low probability of awareness with recall.",
+      "text": "The BIS system uses a disposable 4-electrode sensor on the patient's forehead to measure electrical activity in the brain before using a proprietary algorithm to process the EEG data and calculate a number between 0 (absence of brain electrical activity) and 100 (wide awake). This provides a direct measure of the patient's response to anaesthetic drugs. The target range of BIS values during general anaesthesia is 40 to 60; this range indicates a low probability of awareness with recall.",
+      "text_raw": "The BIS system uses a disposable 4-electrode sensor on the patient's forehead to measure electrical activity in the brain before using a proprietary algorithm to process the EEG data and calculate a number between 0 (absence of brain electrical activity) and 100 (wide awake). This provides a direct measure of the patient's response to anaesthetic drugs. The target range of BIS values during general anaesthesia is 40 to 60; this range indicates a low probability of awareness with recall.",
+      "glyph_repairs": [],
+      "text_sha256": "558f90c8aea923d82ff2e499f8a4254e7a8281cef1c3307d9896153e8c98b43b",
+      "text_raw_sha256": "558f90c8aea923d82ff2e499f8a4254e7a8281cef1c3307d9896153e8c98b43b",
+      "char_start": 161,
+      "char_end": 652,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "nice_02",
+      "source": "nice_htg292",
+      "axis": "hypnosis_depth",
+      "section": "3.1 The problem addressed",
+      "page": 7,
+      "start": "EEG-based depth of anaesthesia monitors are designed",
+      "end": "cognitive dysfunction in older patients.",
+      "text": "EEG-based depth of anaesthesia monitors are designed to indicate the probability of consciousness with explicit recall in patients receiving general anaesthetics, and to aid the tailoring of anaesthetic dose to the individual patient to avoid inadequate or excessively deep levels of anaesthesia. Measuring a patient's response to anaesthesia is important clinically because individual variation in response to anaesthetics can occasionally lead to inadequate or excessively deep levels of anaesthesia. An inadequate level of anaesthesia can result in patient awareness during surgery, which can cause post-traumatic stress disorder in some patients. Conversely, an excessively deep level of anaesthesia can result in prolonged recovery and has been linked to an increased risk of postoperative adverse outcomes, including myocardial infarction, stroke and cognitive dysfunction in older patients.",
+      "text_raw": "EEG-based depth of anaesthesia monitors are designed to indicate the probability of consciousness with explicit recall in patients receiving general anaesthetics, and to aid the tailoring of anaesthetic dose to the individual patient to avoid inadequate or excessively deep levels of anaesthesia. Measuring a patient's response to anaesthesia is important clinically because individual variation in response to anaesthetics can occasionally lead to inadequate or excessively deep levels of anaesthesia. An inadequate level of anaesthesia can result in patient awareness during surgery, which can cause post-traumatic stress disorder in some patients. Conversely, an excessively deep level of anaesthesia can result in prolonged recovery and has been linked to an increased risk of postoperative adverse outcomes, including myocardial infarction, stroke and cognitive dysfunction in older patients.",
+      "glyph_repairs": [],
+      "text_sha256": "9324b5e55504e4df2efb6b1a9116d5e86d1d4c584fa632708b8a96075d9c1973",
+      "text_raw_sha256": "9324b5e55504e4df2efb6b1a9116d5e86d1d4c584fa632708b8a96075d9c1973",
+      "char_start": 154,
+      "char_end": 1051,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "nice_03",
+      "source": "nice_htg292",
+      "axis": "hypnosis_depth",
+      "section": "1 Recommendations (1.1-1.2)",
+      "page": 4,
+      "start": "The use of electroencephalography (EEG)-based",
+      "end": "intravenous anaesthesia. The BIS monitor is therefore recommended as an option in these patients.",
+      "text": "The use of electroencephalography (EEG)-based depth of anaesthesia monitors is recommended as an option during any type of general anaesthesia in patients considered at higher risk of adverse outcomes. This includes patients at higher risk of unintended awareness and patients at higher risk of excessively deep anaesthesia. The Bispectral Index (BIS) depth of anaesthesia monitor is therefore recommended as an option in these patients. 1.2 The use of EEG-based depth of anaesthesia monitors is also recommended as an option in all patients receiving total intravenous anaesthesia. The BIS monitor is therefore recommended as an option in these patients.",
+      "text_raw": "The use of electroencephalography (EEG)-based depth of anaesthesia monitors is recommended as an option during any type of general anaesthesia in patients considered at higher risk of adverse outcomes. This includes patients at higher risk of unintended awareness and patients at higher risk of excessively deep anaesthesia. The Bispectral Index (BIS) depth of anaesthesia monitor is therefore recommended as an option in these patients. 1.2 The use of EEG-based depth of anaesthesia monitors is also recommended as an option in all patients receiving total intravenous anaesthesia. The BIS monitor is therefore recommended as an option in these patients.",
+      "glyph_repairs": [],
+      "text_sha256": "ac41fa6190cdc50b165733ed7e24ba57f7efb42a678d5438a2a5cc42f3b6f896",
+      "text_raw_sha256": "ac41fa6190cdc50b165733ed7e24ba57f7efb42a678d5438a2a5cc42f3b6f896",
+      "char_start": 149,
+      "char_end": 804,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "nice_04",
+      "source": "nice_htg292",
+      "axis": "hypnosis_depth",
+      "section": "3.7",
+      "page": 8,
+      "start": "Groups of patients who are considered at higher risk",
+      "end": "receiving inadequate levels of anaesthesia.",
+      "text": "Groups of patients who are considered at higher risk of unintended awareness during general anaesthesia include patients with high opiate or high alcohol use, patients with airway problems, and patients with previous experience of accidental awareness during surgery. The risk of unintended awareness is also raised by the concomitant use of muscle relaxants, particularly with total intravenous anaesthesia. Older patients, patients with comorbidities and those undergoing certain types of surgery are also considered at higher risk of unintended awareness because they are at greater risk of haemodynamic instability during surgery. Therefore, lower levels of anaesthetic are often used to prevent adverse effects on the cardiovascular system, which can result in these patient groups receiving inadequate levels of anaesthesia.",
+      "text_raw": "Groups of patients who are considered at higher risk of unintended awareness during general anaesthesia include patients with high opiate or high alcohol use, patients with airway problems, and patients with previous experience of accidental awareness during surgery. The risk of unintended awareness is also raised by the concomitant use of muscle relaxants, particularly with total intravenous anaesthesia. Older patients, patients with comorbidities and those undergoing certain types of surgery are also considered at higher risk of unintended awareness because they are at greater risk of haemodynamic instability during surgery. Therefore, lower levels of anaesthetic are often used to prevent adverse effects on the cardiovascular system, which can result in these patient groups receiving inadequate levels of anaesthesia.",
+      "glyph_repairs": [],
+      "text_sha256": "e4ab6f43a91ccb4c50f615443fc549a17a0f01af55f0f7148bfa1942f76969d4",
+      "text_raw_sha256": "e4ab6f43a91ccb4c50f615443fc549a17a0f01af55f0f7148bfa1942f76969d4",
+      "char_start": 1855,
+      "char_end": 2685,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_07",
+      "source": "nimmo2019_tiva",
+      "axis": "hypnosis_depth",
+      "section": "Monitoring the patient during TIVA",
+      "page": 8,
+      "column": "R",
+      "start": "For example, the EEG waveform may be displayed",
+      "end": "whether anaesthetic dose should be adjusted.",
+      "text": "For example, the EEG waveform may be displayed together with measures of the EEG signal quality, EMG activity and degree of burst suppression. Optimal use of a pEEG monitor involves using all the information it provides together with the information from other patient monitors, clinical judgement and experience. A pEEG index value may be a useful extra piece of information, but it should be considered along with all the other available information before making a judgement about whether anaesthetic dose should be adjusted.",
+      "text_raw": "For example, the EEG waveform may be displayed together with measures of the EEG signal quality, EMG activity and degree of burst suppression. Optimal use of a pEEG monitor involves using all the information it provides together with the information from other patient monitors, clinical judgement and experience. A pEEG index value may be a useful extra piece of information, but it should be considered along with all the other available information before making a judgement about whether anaesthetic dose should be adjusted.",
+      "glyph_repairs": [],
+      "text_sha256": "67c3225ca108acf85d7f293f68b1a9b1de0f06c696b517075db3085edd4b0d43",
+      "text_raw_sha256": "67c3225ca108acf85d7f293f68b1a9b1de0f06c696b517075db3085edd4b0d43",
+      "char_start": 661,
+      "char_end": 1189,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_08",
+      "source": "nimmo2019_tiva",
+      "axis": "hypnosis_depth",
+      "section": "Rapid sequence induction",
+      "page": 9,
+      "column": "L",
+      "start": "If ketamine is given, then",
+      "end": "pEEG index value may occur [35].",
+      "text": "If ketamine is given, then paradoxical increases in pEEG index value may occur [35].",
+      "text_raw": "If ketamine is given, then paradoxical increases in pEEG index value may occur [35].",
+      "glyph_repairs": [],
+      "text_sha256": "b42fc90cf471aa86e1c74dc5d715d71cfe77b4f19a555a4ed5d04e07cc4887bc",
+      "text_raw_sha256": "b42fc90cf471aa86e1c74dc5d715d71cfe77b4f19a555a4ed5d04e07cc4887bc",
+      "char_start": 195,
+      "char_end": 279,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "esaic_01",
+      "source": "aldecoa2024_esaic",
+      "axis": "hypnosis_depth",
+      "section": "Recommendation 5.1 (PICO 14)",
+      "page": 13,
+      "column": "L",
+      "split": 323,
+      "start": "Recommendation 5.1",
+      "end": "decrease the risk of POD.",
+      "text": "Recommendation 5.1 We suggest Index-based EEG monitoring depth of anaesthesia guidance to decrease the risk of POD.",
+      "text_raw": "Recommendation 5.1 We suggest Index-based EEG monitoring depth of anaesthesia guidance to decrease the risk of POD.",
+      "glyph_repairs": [],
+      "text_sha256": "95bd6297f2adac346ea1981de209a41da41b44e0c12bbe3df02ca039e212db3d",
+      "text_raw_sha256": "95bd6297f2adac346ea1981de209a41da41b44e0c12bbe3df02ca039e212db3d",
+      "char_start": 2239,
+      "char_end": 2354,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "esaic_02",
+      "source": "aldecoa2024_esaic",
+      "axis": "hypnosis_depth",
+      "section": "Recommendation 5.2 (PICO 15)",
+      "page": 13,
+      "column": "R",
+      "split": 323,
+      "start": "We suggest multiparameter",
+      "end": "decrease the risk of POD.",
+      "text": "We suggest multiparameter, intraoperative EEG monitoring (burst suppression, density spectral array, DSA) during anaesthesia to decrease the risk of POD.",
+      "text_raw": "We suggest multiparameter, intraoperative EEG monitoring (burst suppression, density spectral array, DSA) during anaesthesia to decrease the risk of POD.",
+      "glyph_repairs": [],
+      "text_sha256": "d75be5f863558c8c1503ba24f296a731fd9406f5d356c37f88bb2eb4e523c88f",
+      "text_raw_sha256": "d75be5f863558c8c1503ba24f296a731fd9406f5d356c37f88bb2eb4e523c88f",
+      "char_start": 2294,
+      "char_end": 2447,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "esaic_03",
+      "source": "aldecoa2024_esaic",
+      "axis": "hypnosis_depth",
+      "section": "PICO 14, evidence summary",
+      "page": 13,
+      "column": "R",
+      "split": 323,
+      "start": "Index values may be less reliable",
+      "end": "reduced cortical electrical activity.",
+      "text": "Index values may be less reliable in older people with reduced cortical electrical activity.",
+      "text_raw": "Index values may be less reliable in older people with reduced cortical electrical activity.",
+      "glyph_repairs": [],
+      "text_sha256": "70a06fbdb80058f766bd84c068a993d3f6a434d5c1020be67588c9e9ecc719b6",
+      "text_raw_sha256": "70a06fbdb80058f766bd84c068a993d3f6a434d5c1020be67588c9e9ecc719b6",
+      "char_start": 1096,
+      "char_end": 1188,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "esaic_04",
+      "source": "aldecoa2024_esaic",
+      "axis": "hypnosis_depth",
+      "section": "PICO 15, discussion",
+      "page": 15,
+      "column": "L",
+      "split": 323,
+      "start": "In older patients, deep anaesthesia frequently causes",
+      "end": "provide raw EEG traces.",
+      "text": "In older patients, deep anaesthesia frequently causes burst suppression activity in the raw EEG,150 which has been identified as a risk factor for POD.129,130,140 – 143 This EEG pattern – an isoelectric line with intermittent bursts – can easily be identified in the raw EEG if presented on the monitors. Thus, anaesthesiologists should ensure that the monitors they use provide raw EEG traces.",
+      "text_raw": "In older patients, deep anaesthesia frequently causes burst suppression activity in the raw EEG,150 which has been identified as a risk factor for POD.129,130,140 – 143 This EEG pattern – an isoelectric line with intermittent bursts – can easily be identified in the raw EEG if presented on the monitors. Thus, anaesthesiologists should ensure that the monitors they use provide raw EEG traces.",
+      "glyph_repairs": [],
+      "text_sha256": "781efb07b164fa18d2042674c013c7bdf0e58449223c3f4ee44c395190264339",
+      "text_raw_sha256": "781efb07b164fa18d2042674c013c7bdf0e58449223c3f4ee44c395190264339",
+      "char_start": 1155,
+      "char_end": 1549,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "esaic_05",
+      "source": "aldecoa2024_esaic",
+      "axis": "hypnosis_depth",
+      "section": "Summary and future directions",
+      "page": 22,
+      "column": "L",
+      "split": 330,
+      "start": "Based on adequate staff training, the anaesthesiologists",
+      "end": "burst suppression in their patients.",
+      "text": "Based on adequate staff training, the anaesthesiologists should likely avoid burst suppression in their patients.",
+      "text_raw": "Based on adequate staff training, the anaesthesiologists should likely avoid burst suppression in their patients.",
+      "glyph_repairs": [],
+      "text_sha256": "95cf32a1415963706c924c088d39fa667b3747e81598ca2af040478f648c2273",
+      "text_raw_sha256": "95cf32a1415963706c924c088d39fa667b3747e81598ca2af040478f648c2273",
+      "char_start": 1939,
+      "char_end": 2052,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_09",
+      "source": "nimmo2019_tiva",
+      "axis": "opioid",
+      "section": "Other drugs administered",
+      "page": 5,
+      "column": "L",
+      "start": "The administration of opioids, benzodiazepines",
+      "end": "of this is uncertain [16].",
+      "fixes": [
+        {
+          "from": "a2-adrenoceptor",
+          "to": "α2-adrenoceptor",
+          "reason": "Greek alpha exported as 'a'; printed as 'α2' (subscript 2)"
+        }
+      ],
+      "text": "The administration of opioids, benzodiazepines, ketamine, α2-adrenoceptor agonists, magnesium and nitrous oxide result in a marked reduction in the required brain propofol concentration [13, 14]. Synergy of effect occurs between propofol and opioids. Opioids reduce the propofol dose required to produce loss of consciousness and, in particular, to obtund movement and haemodynamic responses to noxious stimuli [15]. A remifentanil infusion is often used in conjunction with propofol infusion. The rapid offset of effect after stopping remifentanil enables doses to be given that reduce propofol requirements by approximately 50% (Table 1) without causing prolonged respiratory depression after surgery. However, intra-operative remifentanil does not provide postoperative analgesia. Higher dose remifentanil infusions (target concentration above 5 ng.ml-1 or infusions above 0.2 µg.kg-1.min-1) may cause acute opioid tolerance or opioid-induced hyperalgesia but the clinical significance of this is uncertain [16].",
+      "text_raw": "The administration of opioids, benzodiazepines, ketamine, a2-adrenoceptor agonists, magnesium and nitrous oxide result in a marked reduction in the required brain propofol concentration [13, 14]. Synergy of effect occurs between propofol and opioids. Opioids reduce the propofol dose required to produce loss of consciousness and, in particular, to obtund movement and haemodynamic responses to noxious stimuli [15]. A remifentanil infusion is often used in conjunction with propofol infusion. The rapid offset of effect after stopping remifentanil enables doses to be given that reduce propofol requirements by approximately 50% (Table 1) without causing prolonged respiratory depression after surgery. However, intra-operative remifentanil does not provide postoperative analgesia. Higher dose remifentanil infusions (target concentration above 5 ng.ml 1 or infusions above 0.2 lg.kg 1.min 1) may cause acute opioid tolerance or opioid-induced hyperalgesia but the clinical signiﬁcance of this is uncertain [16].",
+      "glyph_repairs": [
+        {
+          "pattern": "ﬁ",
+          "replacement": "fi",
+          "count": 1
+        },
+        {
+          "pattern": "\\blg\\.(?=(?:kg|ml|h|min)\\b)",
+          "replacement": "µg.",
+          "count": 1
+        },
+        {
+          "pattern": "(\\b(?:ml|min|kg|h))\\s1\\b",
+          "replacement": "\\1-1",
+          "count": 3
+        },
+        {
+          "from": "a2-adrenoceptor",
+          "to": "α2-adrenoceptor",
+          "reason": "Greek alpha exported as 'a'; printed as 'α2' (subscript 2)",
+          "kind": "manual, checked against the page image"
+        }
+      ],
+      "text_sha256": "be32fd53c0227b4a07aa532f946920e5dfe512e064b8fe25c1fb06fd9950d3f3",
+      "text_raw_sha256": "f88058612622e95c8a76499cf6759f1a957d9a4b2e15bb36d78ec40723f4805d",
+      "char_start": 242,
+      "char_end": 1256,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_10",
+      "source": "nimmo2019_tiva",
+      "axis": "opioid",
+      "section": "Typical target concentrations in routine practice",
+      "page": 5,
+      "column": "R",
+      "start": "Where TCI remifentanil is administered with propofol",
+      "end": "has received a neuromuscular blocking drug.",
+      "text": "Where TCI remifentanil is administered with propofol, target remifentanil concentrations of 2–6 ng.ml-1 are commonly used (equivalent to manual infusion rates of approximately of 0.08–0.25 µg.kg-1.min-1) and will usually necessitate ventilation of the patient’s lungs, as spontaneous ventilation is uncommon with concentrations > 1.5 ng.ml-1 in adults. During maintenance of anaesthesia, the target propofol concentration and opioid administration should be adjusted, using clinical judgement supported by the observation of clinical signs, and supplemented by the use of a pEEG device if the patient has received a neuromuscular blocking drug.",
+      "text_raw": "Where TCI remifentanil is administered with propofol, target remifentanil concentrations of 2–6 ng.ml 1 are commonly used (equivalent to manual infusion rates of approximately of 0.08–0.25 lg.kg 1.min 1) and will usually necessitate ventilation of the patient’s lungs, as spontaneous ventilation is uncommon with concentrations > 1.5 ng.ml 1 in adults. During maintenance of anaesthesia, the target propofol concentration and opioid administration should be adjusted, using clinical judgement supported by the observation of clinical signs, and supplemented by the use of a pEEG device if the patient has received a neuromuscular blocking drug.",
+      "glyph_repairs": [
+        {
+          "pattern": "\\blg\\.(?=(?:kg|ml|h|min)\\b)",
+          "replacement": "µg.",
+          "count": 1
+        },
+        {
+          "pattern": "(\\b(?:ml|min|kg|h))\\s1\\b",
+          "replacement": "\\1-1",
+          "count": 4
+        }
+      ],
+      "text_sha256": "f0fb1fc187c2015101dd09871199cdf58ac17dd5068ba6d9e43a151a0a492b94",
+      "text_raw_sha256": "a68054ef2480cb8d2fe4ce2ef2d08b800de4daf97d30ee400028fcfea2d9ca39",
+      "char_start": 1452,
+      "char_end": 2096,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "ult_01",
+      "source": "fda_ultiva",
+      "axis": "opioid",
+      "section": "Clinical Pharmacology: Pharmacodynamics",
+      "page": 1,
+      "start": "Pharmacodynamics: The analgesic effects of ULTIVA",
+      "end": "New steady-state concentrations occur within 5 to 10 minutes after changes in infusion rate.",
+      "fixes": [
+        {
+          "from": "bloodbrain",
+          "to": "blood-brain",
+          "reason": "compound hyphen at line end removed by pdftotext; printed as 'blood-/brain'"
+        }
+      ],
+      "text": "Pharmacodynamics: The analgesic effects of ULTIVA are rapid in onset and offset. Its effects and side effects are dose dependent and similar to other µ-opioids. ULTIVA in humans has a rapid blood-brain equilibration half-time of 1 ± 1 minutes (mean ± SD) and a rapid onset of action. The pharmacodynamic effects of ULTIVA closely follow the measured blood concentrations, allowing direct correlation between dose, blood levels, and response. Blood concentration decreases 50% in 3 to 6 minutes after a 1-minute infusion or after prolonged continuous infusion due to rapid distribution and elimination processes and is independent of duration of drug administration. Recovery from the effects of ULTIVA occurs rapidly (within 5 to 10 minutes). New steady-state concentrations occur within 5 to 10 minutes after changes in infusion rate.",
+      "text_raw": "Pharmacodynamics: The analgesic effects of ULTIVA are rapid in onset and offset. Its effects and side effects are dose dependent and similar to other µ-opioids. ULTIVA in humans has a rapid bloodbrain equilibration half-time of 1 ± 1 minutes (mean ± SD) and a rapid onset of action. The pharmacodynamic effects of ULTIVA closely follow the measured blood concentrations, allowing direct correlation between dose, blood levels, and response. Blood concentration decreases 50% in 3 to 6 minutes after a 1-minute infusion or after prolonged continuous infusion due to rapid distribution and elimination processes and is independent of duration of drug administration. Recovery from the effects of ULTIVA occurs rapidly (within 5 to 10 minutes). New steady-state concentrations occur within 5 to 10 minutes after changes in infusion rate.",
+      "glyph_repairs": [
+        {
+          "from": "bloodbrain",
+          "to": "blood-brain",
+          "reason": "compound hyphen at line end removed by pdftotext; printed as 'blood-/brain'",
+          "kind": "manual, checked against the page image"
+        }
+      ],
+      "text_sha256": "d8462aacc99f8b24671f0d4e8c96b7b3491dc96c7a6b9c22d8759f1aec12e8ee",
+      "text_raw_sha256": "04e064fb4040d00ce2a7b5ef89839b40e6e8a5798c1bb98ee7155ddcc6afe437",
+      "char_start": 1610,
+      "char_end": 2444,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "ult_02",
+      "source": "fda_ultiva",
+      "axis": "opioid",
+      "section": "Clinical Pharmacology: Pharmacodynamics (Anesthesia)",
+      "page": 3,
+      "start": "Anesthesia: ULTIVA is synergistic with the activity of hypnotics",
+      "end": "PRECAUTIONS, and DOSAGE AND ADMINISTRATION).",
+      "text": "Anesthesia: ULTIVA is synergistic with the activity of hypnotics (propofol and thiopental), inhaled anesthetics, and benzodiazepines (see CLINICAL TRIALS, PRECAUTIONS, and DOSAGE AND ADMINISTRATION).",
+      "text_raw": "Anesthesia: ULTIVA is synergistic with the activity of hypnotics (propofol and thiopental), inhaled anesthetics, and benzodiazepines (see CLINICAL TRIALS, PRECAUTIONS, and DOSAGE AND ADMINISTRATION).",
+      "glyph_repairs": [],
+      "text_sha256": "2ccfc4012aee2767a00a67c1004ba62bdbc1069ef5583b2848e099734c976f8a",
+      "text_raw_sha256": "2ccfc4012aee2767a00a67c1004ba62bdbc1069ef5583b2848e099734c976f8a",
+      "char_start": 886,
+      "char_end": 1085,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "ult_03",
+      "source": "fda_ultiva",
+      "axis": "opioid",
+      "section": "Dosage and Administration: During General Anesthesia",
+      "page": 22,
+      "start": "ULTIVA is synergistic with other anesthetics; therefore,",
+      "end": "must be individualized based on the patient’s response.",
+      "text": "ULTIVA is synergistic with other anesthetics; therefore, clinicians may need to reduce doses of thiopental, propofol, isoflurane, and midazolam by up to 75% with the coadministration of ULTIVA. The administration of ULTIVA must be individualized based on the patient’s response.",
+      "text_raw": "ULTIVA is synergistic with other anesthetics; therefore, clinicians may need to reduce doses of thiopental, propofol, isoflurane, and midazolam by up to 75% with the coadministration of ULTIVA. The administration of ULTIVA must be individualized based on the patient’s response.",
+      "glyph_repairs": [],
+      "text_sha256": "ca0e3d090c26be8a759269c1e1b07fddcede3375f9b9f905b5a102a4e5239e04",
+      "text_raw_sha256": "ca0e3d090c26be8a759269c1e1b07fddcede3375f9b9f905b5a102a4e5239e04",
+      "char_start": 514,
+      "char_end": 792,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "ult_04",
+      "source": "fda_ultiva",
+      "axis": "opioid",
+      "section": "Dosage and Administration: During Maintenance of Anesthesia",
+      "page": 23,
+      "start": "During Maintenance of Anesthesia: After endotracheal intubation",
+      "end": "should be considered to increase the depth of anesthesia.",
+      "text": "During Maintenance of Anesthesia: After endotracheal intubation, the infusion rate of ULTIVA should be decreased in accordance with the dosing guidelines in Tables 10 (adults) and 11 (pediatric patients). Due to the fast onset and short duration of action of ULTIVA, the rate of administration during anesthesia can be titrated upward in 25% to 100% increments in adult patients or up to 50% increments in pediatric patients, or downward in 25% to 50% decrements every 2 to 5 minutes to attain the desired level of µ-opioid effect. In response to light anesthesia or transient episodes of intense surgical stress, supplemental bolus doses of 1 mcg/kg may be administered every 2 to 5 minutes. At infusion rates >1 mcg/kg/min, increases in the concomitant anesthetic agents should be considered to increase the depth of anesthesia.",
+      "text_raw": "During Maintenance of Anesthesia: After endotracheal intubation, the infusion rate of ULTIVA should be decreased in accordance with the dosing guidelines in Tables 10 (adults) and 11 (pediatric patients). Due to the fast onset and short duration of action of ULTIVA, the rate of administration during anesthesia can be titrated upward in 25% to 100% increments in adult patients or up to 50% increments in pediatric patients, or downward in 25% to 50% decrements every 2 to 5 minutes to attain the desired level of µ-opioid effect. In response to light anesthesia or transient episodes of intense surgical stress, supplemental bolus doses of 1 mcg/kg may be administered every 2 to 5 minutes. At infusion rates >1 mcg/kg/min, increases in the concomitant anesthetic agents should be considered to increase the depth of anesthesia.",
+      "glyph_repairs": [],
+      "text_sha256": "7f8f209303a9845b879d485eb5383d554026e57e3f18dcda9cddceca3fe0fe7b",
+      "text_raw_sha256": "7f8f209303a9845b879d485eb5383d554026e57e3f18dcda9cddceca3fe0fe7b",
+      "char_start": 2359,
+      "char_end": 3189,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "poqi_01",
+      "source": "saugel2024_poqi",
+      "axis": "haemodynamics",
+      "section": "Consensus statement 1 / recommendation 1",
+      "page": 2,
+      "column": "R",
+      "start": "Consensus statement 1:",
+      "end": "(strong recommendation, moderate-quality evidence).",
+      "fixes": [
+        {
+          "from": "<60e70",
+          "to": "<60–70",
+          "reason": "en dash exported as 'e'"
+        },
+        {
+          "from": "<90e100",
+          "to": "<90–100",
+          "reason": "en dash exported as 'e'"
+        },
+        {
+          "from": "\u000260 mm Hg",
+          "to": "≥60 mm Hg",
+          "reason": "'≥' exported as control character U+0002 by the PDF font; printed as ≥ (see Table 1, page 3)"
+        }
+      ],
+      "text": "Consensus statement 1: Intraoperative mean arterial pressures <60–70 mm Hg or systolic arterial pressures <90–100 mm Hg are associated with acute kidney injury, myocardial injury, myocardial infarction, and death. Injury is a function of hypotension severity and duration (high-quality evidence). Consensus recommendation 1: We recommend keeping intraoperative mean arterial pressure ≥60 mm Hg in at-risk patients (strong recommendation, moderate-quality evidence).",
+      "text_raw": "Consensus statement 1: Intraoperative mean arterial pressures <60e70 mm Hg or systolic arterial pressures <90e100 mm Hg are associated with acute kidney injury, myocardial injury, myocardial infarction, and death. Injury is a function of hypotension severity and duration (high-quality evidence). Consensus recommendation 1: We recommend keeping intraoperative mean arterial pressure \u000260 mm Hg in at-risk patients (strong recommendation, moderate-quality evidence).",
+      "glyph_repairs": [
+        {
+          "from": "<60e70",
+          "to": "<60–70",
+          "reason": "en dash exported as 'e'",
+          "kind": "manual, checked against the page image"
+        },
+        {
+          "from": "<90e100",
+          "to": "<90–100",
+          "reason": "en dash exported as 'e'",
+          "kind": "manual, checked against the page image"
+        },
+        {
+          "from": "\u000260 mm Hg",
+          "to": "≥60 mm Hg",
+          "reason": "'≥' exported as control character U+0002 by the PDF font; printed as ≥ (see Table 1, page 3)",
+          "kind": "manual, checked against the page image"
+        }
+      ],
+      "text_sha256": "f1af37e245383b488a5568547edc41188bc14411ad1ca375a27c94cb9f0ef980",
+      "text_raw_sha256": "cd96f1a8f08ba05ea5839297e7bae50f6233e9136bd221bb6430d4c907c963e4",
+      "char_start": 2769,
+      "char_end": 3234,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "poqi_02",
+      "source": "saugel2024_poqi",
+      "axis": "haemodynamics",
+      "section": "Consensus recommendation 1, summary",
+      "page": 4,
+      "column": "L",
+      "start": "In summary, there are clear associations",
+      "end": "is advisable.",
+      "fixes": [
+        {
+          "from": "\u000260 mm Hg",
+          "to": "≥60 mm Hg",
+          "reason": "'≥' exported as control character U+0002 by the PDF font; printed as ≥"
+        }
+      ],
+      "text": "In summary, there are clear associations between intraoperative hypotension and renal and myocardial injury. However, trial data remain sparse and suffer methodologic limitations. The extent to which the associations are causal thus remains largely unknown; consequently, the acceptable lower limit of intraoperative arterial pressure remains uncertain. Nonetheless, available information suggests that keeping intraoperative mean arterial pressure ≥60 mm Hg is advisable.",
+      "text_raw": "In summary, there are clear associations between intraoperative hypotension and renal and myocardial injury. However, trial data remain sparse and suffer methodologic limitations. The extent to which the associations are causal thus remains largely unknown; consequently, the acceptable lower limit of intraoperative arterial pressure remains uncertain. Nonetheless, available information suggests that keeping intraoperative mean arterial pressure \u000260 mm Hg is advisable.",
+      "glyph_repairs": [
+        {
+          "from": "\u000260 mm Hg",
+          "to": "≥60 mm Hg",
+          "reason": "'≥' exported as control character U+0002 by the PDF font; printed as ≥",
+          "kind": "manual, checked against the page image"
+        }
+      ],
+      "text_sha256": "50b4c92e37c4d1832998ff5d1a449856164a2b2b15c815f7ab4e55d1fe55601c",
+      "text_raw_sha256": "5910f906e210137f514cb096bc21f5759af3a465cd5e5609280a09092468e3e0",
+      "char_start": 682,
+      "char_end": 1154,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "poqi_03",
+      "source": "saugel2024_poqi",
+      "axis": "haemodynamics",
+      "section": "Table 1 (consensus recommendation 3)",
+      "page": 3,
+      "start": "Consensus recommendation 3: We recommend that treatment",
+      "end": "bradycardia, and low cardiac output.",
+      "text": "Consensus recommendation 3: We recommend that treatment of hypotension be based on presumed underlying causes including vasodilation, hypovolaemia, bradycardia, and low cardiac output.",
+      "text_raw": "Consensus recommendation 3: We recommend that treatment of hypotension be based on presumed underlying causes including vasodilation, hypovolaemia, bradycardia, and low cardiac output.",
+      "glyph_repairs": [],
+      "text_sha256": "2eaf9e389c20946b88f3e1c978272b1bcabcf6cc4cafb63b66ada8c9c95db4ea",
+      "text_raw_sha256": "2eaf9e389c20946b88f3e1c978272b1bcabcf6cc4cafb63b66ada8c9c95db4ea",
+      "char_start": 456,
+      "char_end": 640,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "poqi_04",
+      "source": "saugel2024_poqi",
+      "axis": "haemodynamics",
+      "section": "Consensus recommendation 3",
+      "page": 4,
+      "column": "R",
+      "start": "Hypotension can result from several underlying",
+      "end": "such as dobutamine or epinephrine.",
+      "text": "Hypotension can result from several underlying physiological processes acting alone or in combination.39 Vasodilation, hypovolaemia, bradycardia, and low cardiac output are all modifiable causes of hypotension.39 Vasodilation can be reversed by vasopressors such as phenylephrine or norepinephrine. Hypovolaemia can be treated with intravascular fluid administration using a variety of different types of fluids including crystalloid and colloid solutions or blood. Bradycardia is typically pharmacologically managed with anticholinergic agents such as atropine or glycopyrronium; when not responsive to these agents, epinephrine or isoprenaline might be necessary. A pacemaker can be used to manage profound bradycardia. Finally, low cardiac output due to acute or chronic myocardial dysfunction can be treated with positive inotropic agents such as dobutamine or epinephrine.",
+      "text_raw": "Hypotension can result from several underlying physiological processes acting alone or in combination.39 Vasodilation, hypovolaemia, bradycardia, and low cardiac output are all modifiable causes of hypotension.39 Vasodilation can be reversed by vasopressors such as phenylephrine or norepinephrine. Hypovolaemia can be treated with intravascular fluid administration using a variety of different types of fluids including crystalloid and colloid solutions or blood. Bradycardia is typically pharmacologically managed with anticholinergic agents such as atropine or glycopyrronium; when not responsive to these agents, epinephrine or isoprenaline might be necessary. A pacemaker can be used to manage profound bradycardia. Finally, low cardiac output due to acute or chronic myocardial dysfunction can be treated with positive inotropic agents such as dobutamine or epinephrine.",
+      "glyph_repairs": [],
+      "text_sha256": "697499b5258f5dbd73e67b1713615fb1566cf47434f63e3cbf797486757f318e",
+      "text_raw_sha256": "697499b5258f5dbd73e67b1713615fb1566cf47434f63e3cbf797486757f318e",
+      "char_start": 120,
+      "char_end": 997,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "poqi_05",
+      "source": "saugel2024_poqi",
+      "axis": "haemodynamics",
+      "section": "Consensus statement 2 / recommendation 4",
+      "page": 4,
+      "column": "R",
+      "start": "Consensus statement 2:",
+      "end": "(strong recommendation, moderate-quality evidence).",
+      "text": "Consensus statement 2: In general surgery, there is no association between intraoperative systolic arterial pressures between 120 and 200 mm Hg and acute kidney injury and myocardial injury (low-quality evidence). Consensus recommendation 4: If intraoperative hypertension is treated, we recommend caution to avoid hypotension (strong recommendation, moderate-quality evidence).",
+      "text_raw": "Consensus statement 2: In general surgery, there is no association between intraoperative systolic arterial pressures between 120 and 200 mm Hg and acute kidney injury and myocardial injury (low-quality evidence). Consensus recommendation 4: If intraoperative hypertension is treated, we recommend caution to avoid hypotension (strong recommendation, moderate-quality evidence).",
+      "glyph_repairs": [],
+      "text_sha256": "9bae65844a7137a1ebefd6938df4c465934451822faa6fa6f323bc751a13fcdb",
+      "text_raw_sha256": "9bae65844a7137a1ebefd6938df4c465934451822faa6fa6f323bc751a13fcdb",
+      "char_start": 998,
+      "char_end": 1376,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "poqi_06",
+      "source": "saugel2024_poqi",
+      "axis": "haemodynamics",
+      "section": "Consensus recommendation 4",
+      "page": 4,
+      "column": "R",
+      "start": "Some degree of hypertension should prompt treatment.",
+      "end": "causes organ injury at some level.",
+      "text": "Some degree of hypertension should prompt treatment. However, given that reasonable levels of hypertension appear relatively benign, available data suggest that hypertension should be treated incrementally, if at all, with the goal of avoiding hypotension, which undoubtedly causes organ injury at some level.",
+      "text_raw": "Some degree of hypertension should prompt treatment. However, given that reasonable levels of hypertension appear relatively benign, available data suggest that hypertension should be treated incrementally, if at all, with the goal of avoiding hypotension, which undoubtedly causes organ injury at some level.",
+      "glyph_repairs": [],
+      "text_sha256": "96379d3ab23a30c17522013e758bf4a18037440e905dc414e9846657ef331c7e",
+      "text_raw_sha256": "96379d3ab23a30c17522013e758bf4a18037440e905dc414e9846657ef331c7e",
+      "char_start": 1738,
+      "char_end": 2047,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "poqi_07",
+      "source": "saugel2024_poqi",
+      "axis": "haemodynamics",
+      "section": "Open research questions: causes of hypotension",
+      "page": 5,
+      "column": "R",
+      "start": "Multiple factors contribute to intraoperative hypotension",
+      "end": "more likely to be effective than generic treatments.",
+      "text": "Multiple factors contribute to intraoperative hypotension including anaesthetic drugs (which induce vasodilation, myocardial depression, or bradycardia), bleeding (resulting in intravascular hypovolaemia), mechanical ventilation (causing high intrathoracic pressure impairing venous return), and patient positioning. Consequently, there are various endotypes of intraoperative hypotension characterised by different underlying haemodynamic alterations. Identified endotypes include myocardial depression, bradycardia, vasodilation, and hypovolaemia.39 It remains unknown whether various causes of hypotension affect the association between hypotension and organ injury, although it seems likely that the degree of hypotension is more important than its cause. In contrast, treatment of hypotension should be directed to the presumed cause(s) because cause-specific treatments are more likely to be effective than generic treatments.",
+      "text_raw": "Multiple factors contribute to intraoperative hypotension including anaesthetic drugs (which induce vasodilation, myocardial depression, or bradycardia), bleeding (resulting in intravascular hypovolaemia), mechanical ventilation (causing high intrathoracic pressure impairing venous return), and patient positioning. Consequently, there are various endotypes of intraoperative hypotension characterised by different underlying haemodynamic alterations. Identified endotypes include myocardial depression, bradycardia, vasodilation, and hypovolaemia.39 It remains unknown whether various causes of hypotension affect the association between hypotension and organ injury, although it seems likely that the degree of hypotension is more important than its cause. In contrast, treatment of hypotension should be directed to the presumed cause(s) because cause-specific treatments are more likely to be effective than generic treatments.",
+      "glyph_repairs": [],
+      "text_sha256": "912d2962426232ce52394c962c5f8f4aadcde66e10d73cd608217d7f503b9346",
+      "text_raw_sha256": "912d2962426232ce52394c962c5f8f4aadcde66e10d73cd608217d7f503b9346",
+      "char_start": 1769,
+      "char_end": 2701,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "fda_04",
+      "source": "fda_diprivan",
+      "axis": "haemodynamics",
+      "section": "2.2 Induction of General Anesthesia",
+      "page": 6,
+      "start": "As with other anesthetic and sedative-hypnotic agents",
+      "end": "when increases in vagal tone are anticipated.",
+      "text": "As with other anesthetic and sedative-hypnotic agents, DIPRIVAN in healthy patients causes a decrease in blood pressure that is secondary to decreases in preload (ventricular filling volume at the end of the diastole) and afterload (arterial resistance at the beginning of the systole). The magnitude of these changes is proportional to the blood and effect site concentrations achieved. These concentrations depend upon the dose and speed of the induction and maintenance infusion rates. In addition, lower heart rates are observed during maintenance with DIPRIVAN, possibly due to reduction of the sympathetic activity and/or resetting of the baroreceptor reflexes. Therefore, anticholinergic agents should be administered when increases in vagal tone are anticipated.",
+      "text_raw": "As with other anesthetic and sedative-hypnotic agents, DIPRIVAN in healthy patients causes a decrease in blood pressure that is secondary to decreases in preload (ventricular filling volume at the end of the diastole) and afterload (arterial resistance at the beginning of the systole). The magnitude of these changes is proportional to the blood and effect site concentrations achieved. These concentrations depend upon the dose and speed of the induction and maintenance infusion rates. In addition, lower heart rates are observed during maintenance with DIPRIVAN, possibly due to reduction of the sympathetic activity and/or resetting of the baroreceptor reflexes. Therefore, anticholinergic agents should be administered when increases in vagal tone are anticipated.",
+      "glyph_repairs": [],
+      "text_sha256": "7daad3dcf1cef42d3adb85a740f75b305655190cf6dbabe093987eff3424e5e7",
+      "text_raw_sha256": "7daad3dcf1cef42d3adb85a740f75b305655190cf6dbabe093987eff3424e5e7",
+      "char_start": 334,
+      "char_end": 1104,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "nice_05",
+      "source": "nice_htg292",
+      "axis": "haemodynamics",
+      "section": "3.6",
+      "page": 8,
+      "start": "Anaesthetic agents can affect the body's physiology",
+      "end": "mortality, and the depth of anaesthesia.",
+      "text": "Anaesthetic agents can affect the body's physiology, in particular, the cardiovascular system. Adverse outcomes of excessively deep general anaesthesia include prolonged recovery, particularly in people with a high BMI. In severe cases or in at-risk patient groups (for example, older patients, patients with liver disease, and patients with poor cardiovascular function), excessively deep anaesthesia can result in haemodynamic instability and respiratory complications (which can be fatal without cardiorespiratory support). Inappropriately deep anaesthesia has also been linked to an increased risk of post-operative complications such as myocardial infarction and stroke in older patients. There is some evidence to suggest a link between longer term morbidity (for example, cognitive dysfunction) and mortality, and the depth of anaesthesia.",
+      "text_raw": "Anaesthetic agents can affect the body's physiology, in particular, the cardiovascular system. Adverse outcomes of excessively deep general anaesthesia include prolonged recovery, particularly in people with a high BMI. In severe cases or in at-risk patient groups (for example, older patients, patients with liver disease, and patients with poor cardiovascular function), excessively deep anaesthesia can result in haemodynamic instability and respiratory complications (which can be fatal without cardiorespiratory support). Inappropriately deep anaesthesia has also been linked to an increased risk of post-operative complications such as myocardial infarction and stroke in older patients. There is some evidence to suggest a link between longer term morbidity (for example, cognitive dysfunction) and mortality, and the depth of anaesthesia.",
+      "glyph_repairs": [],
+      "text_sha256": "9018eb1ebf17a02373c744a4a80787c4c72b0e35fb41e6eb48eac1e34bd55a5d",
+      "text_raw_sha256": "9018eb1ebf17a02373c744a4a80787c4c72b0e35fb41e6eb48eac1e34bd55a5d",
+      "char_start": 1004,
+      "char_end": 1850,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "ult_05",
+      "source": "fda_ultiva",
+      "axis": "haemodynamics",
+      "section": "Clinical Pharmacology: Pharmacodynamics (Hemodynamics)",
+      "page": 2,
+      "start": "Hemodynamics: In premedicated patients undergoing anesthesia",
+      "end": "by the administration of fluids or vasopressors.",
+      "text": "Hemodynamics: In premedicated patients undergoing anesthesia, 1-minute infusions of <2 mcg/kg of ULTIVA cause dose-dependent hypotension and bradycardia. While additional doses >2 mcg/kg (up to 30 mcg/kg) do not produce any further decreases in heart rate or blood pressure, the duration of the hemodynamic change is increased in proportion to the blood concentrations achieved. Peak hemodynamic effects occur within 3 to 5 minutes of a single dose of ULTIVA or an infusion rate increase. Glycopyrrolate, atropine, and vagolytic neuromuscular blocking agents attenuate the hemodynamic effects associated with ULTIVA. When appropriate, bradycardia and hypotension can be reversed by reduction of the rate of infusion of ULTIVA, or the dose of concurrent anesthetics, or by the administration of fluids or vasopressors.",
+      "text_raw": "Hemodynamics: In premedicated patients undergoing anesthesia, 1-minute infusions of <2 mcg/kg of ULTIVA cause dose-dependent hypotension and bradycardia. While additional doses >2 mcg/kg (up to 30 mcg/kg) do not produce any further decreases in heart rate or blood pressure, the duration of the hemodynamic change is increased in proportion to the blood concentrations achieved. Peak hemodynamic effects occur within 3 to 5 minutes of a single dose of ULTIVA or an infusion rate increase. Glycopyrrolate, atropine, and vagolytic neuromuscular blocking agents attenuate the hemodynamic effects associated with ULTIVA. When appropriate, bradycardia and hypotension can be reversed by reduction of the rate of infusion of ULTIVA, or the dose of concurrent anesthetics, or by the administration of fluids or vasopressors.",
+      "glyph_repairs": [],
+      "text_sha256": "3477a4cc8bc9bae720a19702f439feff4f4a87148deef01e2072768a727f385d",
+      "text_raw_sha256": "3477a4cc8bc9bae720a19702f439feff4f4a87148deef01e2072768a727f385d",
+      "char_start": 149,
+      "char_end": 966,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_11",
+      "source": "nimmo2019_tiva",
+      "axis": "special_populations",
+      "section": "Recommendation 3",
+      "page": 2,
+      "column": "R",
+      "start": "Starting target concentrations should be chosen",
+      "end": "small incremental increases.",
+      "fixes": [
+        {
+          "from": "coadministered",
+          "to": "co-administered",
+          "reason": "compound hyphen at line end removed by pdftotext; printed as 'co-/administered'"
+        }
+      ],
+      "text": "Starting target concentrations should be chosen depending on the characteristics of the patient, co-administered drugs and clinical situation. Older, frail or unwell patients may benefit from setting a low initial target propofol concentration, and making repeated small incremental increases.",
+      "text_raw": "Starting target concentrations should be chosen depending on the characteristics of the patient, coadministered drugs and clinical situation. Older, frail or unwell patients may beneﬁt from setting a low initial target propofol concentration, and making repeated small incremental increases.",
+      "glyph_repairs": [
+        {
+          "pattern": "ﬁ",
+          "replacement": "fi",
+          "count": 1
+        },
+        {
+          "from": "coadministered",
+          "to": "co-administered",
+          "reason": "compound hyphen at line end removed by pdftotext; printed as 'co-/administered'",
+          "kind": "manual, checked against the page image"
+        }
+      ],
+      "text_sha256": "dad95fa01955eff4e0e13b85e02f41ddc45a002be240d0f25b9b4f2270ddc138",
+      "text_raw_sha256": "0eae4b7eb19bd6739cc684c011ebed540ad86cb8f2952c60e823c32d6d286177",
+      "char_start": 350,
+      "char_end": 641,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "tiva_12",
+      "source": "nimmo2019_tiva",
+      "axis": "special_populations",
+      "section": "Inter-individual variation",
+      "page": 4,
+      "column": "R",
+      "start": "In general, older patients require a lower",
+      "end": "overlap between patients of different ages.",
+      "text": "In general, older patients require a lower brain anaesthetic drug concentration than younger patients [6], but there is considerable variation between individuals of the same age and overlap between patients of different ages.",
+      "text_raw": "In general, older patients require a lower brain anaesthetic drug concentration than younger patients [6], but there is considerable variation between individuals of the same age and overlap between patients of different ages.",
+      "glyph_repairs": [],
+      "text_sha256": "5c6d0a8f408045eb2b7b51bbeae2e9f60fa12b045bc4016b4be3a6a1ce648c55",
+      "text_raw_sha256": "5c6d0a8f408045eb2b7b51bbeae2e9f60fa12b045bc4016b4be3a6a1ce648c55",
+      "char_start": 1281,
+      "char_end": 1507,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "fda_05",
+      "source": "fda_diprivan",
+      "axis": "special_populations",
+      "section": "5.12 Use in the Elderly, Debilitated, or ASA-PS III or IV Patients",
+      "page": 14,
+      "start": "A lower induction dose and a slower maintenance rate",
+      "end": "early signs of hypotension and/or bradycardia.",
+      "text": "A lower induction dose and a slower maintenance rate of administration should be used in elderly, debilitated, or ASA-PS III or IV patients [see Dosage and Administration (2)]. Patients should be continuously monitored for early signs of hypotension and/or bradycardia.",
+      "text_raw": "A lower induction dose and a slower maintenance rate of administration should be used in elderly, debilitated, or ASA-PS III or IV patients [see Dosage and Administration (2)]. Patients should be continuously monitored for early signs of hypotension and/or bradycardia.",
+      "glyph_repairs": [],
+      "text_sha256": "dbdcf4ef68b604c4fc2467af90b9744231b229acd61eebcc3d9b77ac0323424f",
+      "text_raw_sha256": "dbdcf4ef68b604c4fc2467af90b9744231b229acd61eebcc3d9b77ac0323424f",
+      "char_start": 67,
+      "char_end": 336,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "fda_06",
+      "source": "fda_diprivan",
+      "axis": "special_populations",
+      "section": "12.3 Pharmacokinetics (Geriatrics)",
+      "page": 24,
+      "start": "With increasing patient age, the dose of propofol needed",
+      "end": "in elderly patients [see Dosage and Administration (2)].",
+      "fixes": [
+        {
+          "from": "doserequirement",
+          "to": "dose-requirement",
+          "reason": "line-end hyphen removed by pdftotext; printed as 'dose-/requirement'"
+        }
+      ],
+      "text": "With increasing patient age, the dose of propofol needed to achieve a defined anesthetic end point (dose-requirement) decreases. This does not appear to be an age-related change in pharmacodynamics or brain sensitivity, as measured by EEG burst suppression. With increasing patient age, pharmacokinetic changes are such that, for a given intravenous bolus dose, higher peak plasma concentrations occur, which can explain the decreased dose requirement. These higher peak plasma concentrations in the elderly can predispose patients to cardiorespiratory effects including hypotension, apnea, airway obstruction, and/or arterial oxygen desaturation. The higher plasma levels reflect an age-related decrease in volume of distribution and intercompartmental clearance. Lower doses are therefore recommended for initiation and maintenance of sedation and anesthesia in elderly patients [see Dosage and Administration (2)].",
+      "text_raw": "With increasing patient age, the dose of propofol needed to achieve a defined anesthetic end point (doserequirement) decreases. This does not appear to be an age-related change in pharmacodynamics or brain sensitivity, as measured by EEG burst suppression. With increasing patient age, pharmacokinetic changes are such that, for a given intravenous bolus dose, higher peak plasma concentrations occur, which can explain the decreased dose requirement. These higher peak plasma concentrations in the elderly can predispose patients to cardiorespiratory effects including hypotension, apnea, airway obstruction, and/or arterial oxygen desaturation. The higher plasma levels reflect an age-related decrease in volume of distribution and intercompartmental clearance. Lower doses are therefore recommended for initiation and maintenance of sedation and anesthesia in elderly patients [see Dosage and Administration (2)].",
+      "glyph_repairs": [
+        {
+          "from": "doserequirement",
+          "to": "dose-requirement",
+          "reason": "line-end hyphen removed by pdftotext; printed as 'dose-/requirement'",
+          "kind": "manual, checked against the page image"
+        }
+      ],
+      "text_sha256": "c70ed52f8f9ad626658358fd177ce947ea0fa39080bdc186abe6143c861786f3",
+      "text_raw_sha256": "878f6aef92ea9e7da410a8ff555fe47425fbca1709aea8c825e87454f8387531",
+      "char_start": 1151,
+      "char_end": 2067,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "ult_06",
+      "source": "fda_ultiva",
+      "axis": "special_populations",
+      "section": "Clinical Pharmacology: Pharmacodynamics (Age)",
+      "page": 3,
+      "start": "Age: The pharmacodynamic activity of ULTIVA",
+      "end": "(25 years of age) (see DOSAGE AND ADMINISTRATION).",
+      "text": "Age: The pharmacodynamic activity of ULTIVA (as measured by the EC50 for development of delta waves on the EEG) increases with increasing age. The EC50 of remifentanil for this measure was 50% less in patients over 65 years of age when compared to healthy volunteers (25 years of age) (see DOSAGE AND ADMINISTRATION).",
+      "text_raw": "Age: The pharmacodynamic activity of ULTIVA (as measured by the EC50 for development of delta waves on the EEG) increases with increasing age. The EC50 of remifentanil for this measure was 50% less in patients over 65 years of age when compared to healthy volunteers (25 years of age) (see DOSAGE AND ADMINISTRATION).",
+      "glyph_repairs": [],
+      "text_sha256": "b9bc2c688e3dbf806f24361735d03ba19ddffaa1fa09d3edb15c470bed572d6c",
+      "text_raw_sha256": "b9bc2c688e3dbf806f24361735d03ba19ddffaa1fa09d3edb15c470bed572d6c",
+      "char_start": 1086,
+      "char_end": 1403,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "ult_07",
+      "source": "fda_ultiva",
+      "axis": "special_populations",
+      "section": "Precautions: Geriatric Use",
+      "page": 14,
+      "start": "While the effective biological half-life of remifentanil is unchanged",
+      "end": "(see CLINICAL PHARMACOLOGY and DOSAGE AND ADMINISTRATION).",
+      "text": "While the effective biological half-life of remifentanil is unchanged, elderly patients have been shown to be twice as sensitive as the younger population to the pharmacodynamic effects of remifentanil. The recommended starting dose of ULTIVA should be decreased by 50% in patients over 65 years of age (see CLINICAL PHARMACOLOGY and DOSAGE AND ADMINISTRATION).",
+      "text_raw": "While the effective biological half-life of remifentanil is unchanged, elderly patients have been shown to be twice as sensitive as the younger population to the pharmacodynamic effects of remifentanil. The recommended starting dose of ULTIVA should be decreased by 50% in patients over 65 years of age (see CLINICAL PHARMACOLOGY and DOSAGE AND ADMINISTRATION).",
+      "glyph_repairs": [],
+      "text_sha256": "4bb9ad2c8b5aa45e47018afbbe5746ea56dbb45d51ff71e81d29a3374b763484",
+      "text_raw_sha256": "4bb9ad2c8b5aa45e47018afbbe5746ea56dbb45d51ff71e81d29a3374b763484",
+      "char_start": 1058,
+      "char_end": 1419,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    },
+    {
+      "id": "ult_08",
+      "source": "fda_ultiva",
+      "axis": "special_populations",
+      "section": "Clinical Pharmacology: Special Populations (Elderly)",
+      "page": 5,
+      "start": "Elderly: The clearance of remifentanil is reduced",
+      "end": "as rapidly after termination of administration in the elderly as in young adults.",
+      "text": "Elderly: The clearance of remifentanil is reduced (approximately 25%) in the elderly (>65 years of age) compared to young adults (average 25 years of age). However, remifentanil blood concentrations fall as rapidly after termination of administration in the elderly as in young adults.",
+      "text_raw": "Elderly: The clearance of remifentanil is reduced (approximately 25%) in the elderly (>65 years of age) compared to young adults (average 25 years of age). However, remifentanil blood concentrations fall as rapidly after termination of administration in the elderly as in young adults.",
+      "glyph_repairs": [],
+      "text_sha256": "5f24dcfb0b1eae037a770face2a1045afed909608ce0b9d6b9e7ba5f7c04ca37",
+      "text_raw_sha256": "5f24dcfb0b1eae037a770face2a1045afed909608ce0b9d6b9e7ba5f7c04ca37",
+      "char_start": 1275,
+      "char_end": 1560,
+      "extraction": "poppler pdftotext; per-column crop when column is L/R; whitespace collapsed; end-of-line hyphens joined"
+    }
+  ]
+}

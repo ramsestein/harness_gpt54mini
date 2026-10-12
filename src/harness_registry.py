@@ -43,6 +43,9 @@ EXPECTED_STRATEGIES = [
     "structured_json",
     "critic_verifier",
     "critic_verifier_sim",
+    "support",
+    "rag",
+    "shap_prompt",
 ]
 
 

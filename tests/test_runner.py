@@ -8,6 +8,7 @@ import pytest
 
 from harness import run as harness_run
 from src import dataset, llm, results
+from src.harness_base import Prediction, Strategy
 
 
 class FakeResponse:
@@ -19,6 +20,27 @@ class FakeResponse:
         self.usage = {}
         self.latency_s = 0.0
         self.dropped_params = []
+
+
+class NoModelHybrid(Strategy):
+    """A strategy that calls no model: it inherits the answers of another model's run."""
+
+    name = "no_model_hybrid"
+    uses_model = False
+    inherited_model = "deepseek-flash"
+
+    def predict(self, window):
+        return Prediction(window_id=window.window_id, action="no_action",
+                          raw_output="no_action", meta={})
+
+
+def test_a_run_that_calls_no_model_records_the_model_it_leans_on(tmp_path):
+    """Two such runs on two models must not collapse into one table row."""
+    outcome = harness_run.run(NoModelHybrid(), "dev", cases=1, results_root=tmp_path, quiet=True)
+    info = json.loads((Path(outcome["out_dir"]) / "run.json").read_text(encoding="utf-8"))
+
+    assert info["model"] == "deepseek-flash"
+    assert info["effort"] is None
 
 
 def _patch_llm(monkeypatch, text="b"):

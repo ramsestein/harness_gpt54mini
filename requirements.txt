@@ -4,3 +4,10 @@ python-dotenv>=1.2
 pytest>=8
 pandas
 numpy
+
+# Machine-learning controls (src/control/): the gradient-boosting reference model, its
+# diagnostics and the failure predictor. scikit-learn is only used for the ROC-AUC and
+# average-precision metrics. SHAP comes from xgboost itself (predict(pred_contribs=True)):
+# the 'shap' package cannot read the per-class base_score that xgboost 3.x writes.
+xgboost>=3.0
+scikit-learn>=1.4

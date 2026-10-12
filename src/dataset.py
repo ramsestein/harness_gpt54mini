@@ -14,13 +14,15 @@ Constants
     ``IDENTIFIER_FIELDS``  -> ("pt_caseid", "pt_subjectid")
 
 ``DecisionWindow`` (frozen dataclass)
-    ``window_id``, ``case_id``, ``input`` (**sanitised** dict), ``output``,
+    ``window_id``, ``case_id``, ``input`` (the **shared view**, see ``src.view``), ``output``,
     ``difficulty`` (str | None), ``raw_input`` (original dict, 280 fields)
     Properties: ``real_action``, ``result_1``, ``result_aux``
     Method: ``to_record()`` -> ``{"window_id", "case_id", "input", "output"}``
 
 Functions
-    ``sanitize_input(inp)``            -> copy without ``IDENTIFIER_FIELDS``
+    ``sanitize_input(inp)``            -> the shared view (``src.view.visible_input``):
+                                          identifiers, bookkeeping, future/outcome
+                                          fields and post-decision samples removed
     ``load_jsonl(path)``               -> list[dict]
     ``case_files(split)``              -> sorted list[Path]
     ``iter_split(split)``              -> Iterator[DecisionWindow] (lazy)
@@ -38,7 +40,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import config
+from . import config, view
 
 __all__ = [
     "SPLITS",
@@ -93,18 +95,22 @@ def get_ratio(value):
 
 
 def sanitize_input(inp):
-    """Return a copy of ``inp`` without the identifier fields."""
-    if not isinstance(inp, dict):
-        return inp
-    return {key: value for key, value in inp.items() if key not in IDENTIFIER_FIELDS}
+    """The shared view of ``inp``: what every strategy and every control may see.
+
+    Identifiers are only part of what is removed: see :mod:`src.view` for the full hidden set
+    (bookkeeping, future and outcome fields, volatile agent) and for the post-decision
+    samples dropped from the time series.
+    """
+    return view.visible_input(inp)
 
 
 @dataclass(frozen=True)
 class DecisionWindow:
     """One decision window: everything observable before the decision, plus labels.
 
-    ``input`` is already sanitised; ``raw_input`` keeps the original 280 fields
-    (including identifiers) for auditing only.
+    ``input`` is the shared view (:mod:`src.view`); ``raw_input`` keeps the original 280
+    fields (identifiers and hidden fields included) for auditing only -- no strategy or
+    control may read it.
     """
 
     window_id: str

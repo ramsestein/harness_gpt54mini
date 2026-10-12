@@ -2,9 +2,9 @@
   "role": "expert anesthesiologist in the middle of a real surgical case",
   "task": "Based ONLY on 'patient_state' below, decide the single best next anesthetic adjustment.",
   "patient_state_notes": [
-    "The keys are the dataset variable codes (for example map_current, bis_trend, ce_propofol, lab_lac).",
-    "Nested objects such as vitals_json and drug_concentrations_json hold the recent time series.",
-    "A null value means the variable was not recorded."
+    "'patient_state' is the current state of the patient: a clinical summary followed by the full monitoring record, with the dataset variable codes (for example map_current, bis_trend, ce_propofol, lab_lac).",
+    "Time offsets are in seconds relative to the decision point (negative = in the past).",
+    "A variable that was not recorded is not listed."
   ],
   "options": {
     "a": "increase_hypnotic",

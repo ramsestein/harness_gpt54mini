@@ -88,7 +88,8 @@ def test_feature_names_drop_identifiers_labels_and_non_numeric_fields():
             "missing": None,
         },
     )
-    assert retrieval.feature_names([window]) == ["hr_current", "n_drug_points"]
+    # n_drug_points is a counter outside the shared view (src.view): never a feature
+    assert retrieval.feature_names([window]) == ["hr_current"]
 
 
 def test_the_corpus_split_is_train():

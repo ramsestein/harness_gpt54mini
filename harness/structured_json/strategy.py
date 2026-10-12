@@ -2,13 +2,14 @@
 """Structured-JSON strategy: the whole prompt is a JSON document.
 
 Unlike ``zero_shot`` (clinical prose) this strategy sends the model a single
-JSON object that holds both the instructions and the decision window, injected
-under ``patient_state``. The answer format is the same: one letter, parsed the
-same way.
+JSON object that holds the instructions, with the decision window injected under
+``patient_state``. The window is the **same rendering every strategy sends**
+(``src.prompting.render_case``, the shared view of ``src.view``): only the wrapper is
+JSON, so this strategy varies the prompt format, never the information. The answer
+format is the same: one letter, parsed the same way.
 
 The instruction half of the prompt lives in ``prompt.json`` (this folder);
-``patient_state`` is added by the strategy, so the window is a *nested JSON
-object*, not a string.
+``patient_state`` is added by the strategy as the rendered case text.
 """
 
 import json
@@ -26,9 +27,9 @@ class StructuredJsonStrategy(Strategy):
 
     name = "structured_json"
     description = (
-        "Single call per window: instructions and decision window are sent as one "
-        "JSON document (window nested under 'patient_state'); the answer is the "
-        "same single letter as zero_shot."
+        "Single call per window: the instructions as one JSON document, with the "
+        "shared rendering of the window (render_case) under 'patient_state'; the "
+        "answer is the same single letter as zero_shot."
     )
 
     def __init__(self, prompt_file=None, indent=None, **options):
@@ -46,7 +47,9 @@ class StructuredJsonStrategy(Strategy):
     def build_prompt(self, window):
         """The user prompt: one JSON document with the window nested inside."""
         payload = self.load_template()
-        payload["patient_state"] = window.input
+        # the same rendering every strategy sends (src.prompting.render_case): only the
+        # wrapper is JSON, the patient state is the shared view, word for word
+        payload["patient_state"] = prompting.render_case(window.input)
         return json.dumps(payload, ensure_ascii=False, indent=self.indent, default=str)
 
     def build_messages(self, window):
