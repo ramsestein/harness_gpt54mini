@@ -1,6 +1,6 @@
 # Clinical context for the AnesLLM decision task (verbatim excerpts)
 
-Every quoted block below is copied literally from the published source named under it. Nothing has been paraphrased. Page numbers are PDF pages. Provenance, licences, glyph repairs and SHA-256 hashes: `guideline_context.sources.json`.
+Every quoted block below is copied literally from the published source named under it. Nothing has been paraphrased. Page numbers are PDF pages. Provenance, licences, glyph repairs and SHA-256 hashes: `context_sources.json`.
 
 
 ## Where the data come from (VitalDB)

@@ -47,10 +47,12 @@ Test-driven: the suite (`tests/`) defines the contract of `src/` and of every st
 - `critic_verifier` — a second, critical call confirms or overrides the first.
 - `critic_verifier_sim` — the second call judges **simulated** futures: both candidates
   are driven through the Python Anesthesia Simulator five minutes ahead.
-- `rag` — `zero_shot` plus the whole contents of a context document (`rag/context.md`)
-  prepended to the prompt.
-- `shap_prompt` — `zero_shot` plus the whole SHAP ranking of the tree control: which
-  features push its answer and in which direction, before the window itself.
+- `rag` — `zero_shot` plus the whole contents of a curated context document
+  (`harness/rag/context.md`: verbatim guideline excerpts with their sources), inserted right after
+  the patient state.
+- `shap_prompt` — `zero_shot` plus the SHAP ranking of the tree control, inserted in the
+  same place: it ranks the window variables by their **mean absolute** SHAP value, so it
+  says how much each one moves that model's answer, not in which direction.
 
 Plus `support`, which calls no model: the tree control answers the windows it is confident
 about and an already-stored `zero_shot` run answers the rest, so a run is free. It leans on
@@ -191,7 +193,14 @@ value: the first call pays for it. Whatever was dropped is reported per window i
 |---|---|---|
 | `gpt-5.4-mini` (the project's model) | `few_shot` k=8, high | 0.3899 |
 | `deepseek-flash` | `few_shot` k=10, high | 0.4206 |
-| `gemini-pro-latest` | `few_shot` k=8, high | 0.4304 (2 windows failed) |
+| `gemini-pro-latest` | `few_shot` k=8, high | 0.4304 — **provisional**, 2 of the 3,457 windows failed |
+
+> Provisional means `summary.json` does not report `errors: 0`, so the metrics come from the
+> windows that survived. The four rows in that state are all `gemini-pro-latest`: `few_shot`
+> none k=8 (1 window), `few_shot` high k=8 (2), `zero_shot` none (2) and `zero_shot` high
+> (1). They are four windows that this model does not answer at all (they time out even with
+> a five-minute allowance, deterministically for two of them), so a `--resume` only closes
+> them if the provider answers them that time.
 
 The same metric for the controls:
 
@@ -207,7 +216,13 @@ The same metric for the controls:
 
 Three readings worth keeping in mind. First, **no prompt architecture beats the tree
 control**, and none beats a plain retrieval plus majority vote of what the clinicians did in
-similar windows: most sit at or below the trivial `always_no_action`. Second, `support` at
+similar windows **outright**: the best `few_shot` of `deepseek-flash` (+0.008) and of
+`gemini-pro-latest` (+0.017) against the kNN are ties under a per-case paired bootstrap
+(95% CI [-0.013, +0.030] and [-0.002, +0.036]), while the project's model sits below it
+(-0.023, CI [-0.045, -0.002]). Those two models do beat `gpt-5.4-mini` with `few_shot`
+(+0.033 and +0.041, significant), so what survives is: the kNN is not beaten, the other two
+models match it, and `gpt-5.4-mini` stays under it. Most architectures sit at or below the
+trivial `always_no_action`. Second, `support` at
 threshold 0 *is* the tree control (0.7495) and walks towards the language model as the
 threshold grows (0.5762 at k=80 on the project's model), which is what makes the hybrid worth
 measuring: it prices the model against the control window by window. Third, the labels are
