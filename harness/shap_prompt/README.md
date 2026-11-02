@@ -22,7 +22,9 @@ python -m src.control.xgboost_diagnostics
 
 Read at run time, so it always follows the current model. The block explains what the numbers
 mean (a mean absolute SHAP value says how much a variable matters, not which decision it
-favours) and then lists `rank. variable: value` for the top rows — **every ranked variable of the shared view**.
+favours) and then lists `rank. variable: value` for the top rows — **every ranked variable of the shared view**,
+plus the two `prior_target_*` the tree reads through its control view (the effect-site
+features are ranked as computed up to -30 s; see the main README, "Effect-site leak at t0").
 
 ## Where the reference goes
 
@@ -30,8 +32,8 @@ favours) and then lists `rank. variable: value` for the top rows — **every ran
 zero_shot prompt (wording unchanged)
   ├── the patient state, rendered as clinical prose
   ├── "What a model trained on thousands of past decisions of this kind pays attention to: ..."
-  │    1. remi_ce_slope_short: 0.9274
-  │    2. cp_remi: 0.5019
+  │    1. remi_ce_slope_short: 0.6027
+  │    2. BIS_current: 0.1924
   │    ...
   ├── "Based ONLY on the information above, decide ..."
   └── the five options (a-e)
@@ -55,8 +57,8 @@ runs with different amounts of the analysis stay distinguishable.
 ```json
 {
   "importance_path": "...\\control\\_analysis\\shap_importance.csv",
-  "rows_shown": 234,
-  "k": 234,
+  "rows_shown": 193,
+  "k": 193,
   "prompt_chars": 7986
 }
 ```

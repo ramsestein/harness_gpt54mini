@@ -38,7 +38,7 @@ if __package__ in (None, ""):  # executed as a script
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src import config, dataset, metrics, view  # noqa: E402
-from src.control import ml_data, xgboost_baseline, xgboost_diagnostics  # noqa: E402
+from src.control import control_view, ml_data, xgboost_baseline, xgboost_diagnostics  # noqa: E402
 
 #: Folder under ``results_harness/control/`` (nothing is launched through the harness here).
 NAME = "failure_predictor"
@@ -343,6 +343,7 @@ def run(out_dir=None, names=None, folds=DEFAULT_FOLDS, n_trees=None, limit=None,
             {
                 "names": names,
                 "view_version": view.VIEW_VERSION,
+                **control_view.describe(),
                 "split": ml_data.FIT_SPLIT,
                 "folds": folds,
                 "trees_per_fold_model": int(n_trees or production_trees()),

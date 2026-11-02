@@ -8,7 +8,7 @@ import pytest
 
 from harness.few_shot import retrieval
 from src import dataset
-from src.control import ml_data, xgboost_baseline, xgboost_diagnostics
+from src.control import control_view, ml_data, xgboost_baseline, xgboost_diagnostics
 
 pytest.importorskip("xgboost")
 
@@ -252,5 +252,8 @@ def test_the_diagnostics_write_three_tables(small_model, tmp_path):
 def test_the_vif_uses_the_same_features_as_the_model():
     """The VIF must describe the matrix the model sees, not another one."""
     names = ml_data.feature_names()
+    k = len(control_view.PRIOR_TARGET_NAMES)
 
-    assert names == retrieval.SimilarityIndex.load(retrieval.DEFAULT_INDEX_PATH).names
+    # the index's own names, then the explicit prior targets of the control view
+    assert names[:-k] == retrieval.SimilarityIndex.load(retrieval.DEFAULT_INDEX_PATH).names
+    assert tuple(names[-k:]) == control_view.PRIOR_TARGET_NAMES

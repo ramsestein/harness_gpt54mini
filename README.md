@@ -81,7 +81,9 @@ Every strategy and every control sees **the same window**:
   strategies send it unchanged (`structured_json` wraps it in JSON; `shap_prompt` adds the
   whole SHAP ranking of the tree control after it).
 - The retrieval index, the XGBoost control, the failure predictor and the SHAP analysis read
-  the numeric fields of the same view.
+  the numeric fields of the same view. The three tree-based ones (XGBoost, the failure
+  predictor, SHAP) read them through the *control view*, which recomputes the effect-site
+  features without the samples after -30 s (see [Effect-site leak at t0](#effect-site-leak-at-t0)).
 - The view has a version (`view.VIEW_VERSION`). `run.json`, the retrieval index and the
   trained models record it; a stale index is rebuilt, a stale model or a run on another view
   is refused, and the leaderboard only lists runs of the current view (`--all-views` to list
@@ -207,7 +209,7 @@ The same metric for the controls:
 | control | result_real |
 |---|---|
 | `human` (replaying the clinician's own action) | 1.0000 |
-| `xgboost` (the tree control) | 0.7495 |
+| `xgboost` (the tree control, control view) | 0.6349 |
 | `retrieval_majority` | 0.4128 |
 | `persistence` | 0.3254 |
 | `always_no_action` (the majority class) | 0.2728 |
@@ -223,8 +225,8 @@ similar windows **outright**: the best `few_shot` of `deepseek-flash` (+0.008) a
 (+0.033 and +0.041, significant), so what survives is: the kNN is not beaten, the other two
 models match it, and `gpt-5.4-mini` stays under it. Most architectures sit at or below the
 trivial `always_no_action`. Second, `support` at
-threshold 0 *is* the tree control (0.7495) and walks towards the language model as the
-threshold grows (0.5762 at k=80 on the project's model), which is what makes the hybrid worth
+threshold 0 *is* the tree control (0.6349) and walks towards the language model as the
+threshold grows (0.4050 at k=80 on the project's model), which is what makes the hybrid worth
 measuring: it prices the model against the control window by window. Third, the labels are
 not equally hard: `result_1`/`result_aux` come from a model trained on the clinicians'
 actions, so a control that votes those labels scores much higher on them than on the real
@@ -233,3 +235,45 @@ action, which is why the retrieval control votes `result_real` only.
 Every number comes from the runs under `results_harness/` (not committed), summarised by
 `python -m src.leaderboard` into `results_harness/leaderboard.csv` (`--models-only` writes
 `results_harness/leaderboard_models.csv` with the runs of the other models).
+
+## Effect-site leak at t0
+
+View 4 keeps the effect-site concentration (Ce) at the decision point. Near the decision the
+Ce series is sampled every 30 s, and for remifentanil the decision point falls at or just
+after the pump's target change, so the t0 sample (and every Ce feature computed with it:
+current value, slopes, deltas, trend code) already moves with the action. The dataset side is
+documented in the AnesLLM dataset's `docs/audit_report.md` §3.1.
+
+The tree-based controls (XGBoost, `support`, the failure predictor, the SHAP ranking behind
+`shap_prompt`) therefore read a **control view** on top of the shared one
+(`src/control/control_view.py`, `CONTROL_VIEW_VERSION = 2`):
+
+- every `ce_*`, `propofol_ce_*` and `remi_ce_*` feature recomputed from the raw Ce series with
+  the samples at t <= -30 s only (same names as in the shared view);
+- the target set by the last past adjustment of each drug (`prior_target_propofol`,
+  `prior_target_remi`), which the prompt already states in prose. Its age is left out on
+  purpose: the `no_action` windows were sampled away from recent adjustments, so "time since
+  the last adjustment" mostly encodes how the benchmark was built.
+
+Trained models record the control view, and a model fitted without it is refused. Where the
+cut goes, measured with XGBoost on `test` (Ce features recomputed up to each cut, no prior
+targets):
+
+| last Ce sample kept | result_real |
+|---|---|
+| 0 s (the t0 sample) | 0.740 |
+| -30 s | 0.629 |
+| -60 s | 0.614 |
+| -90 s | 0.595 |
+| -120 s | 0.548 |
+
+Dropping the t0 sample costs 11 points and every further 30 s only 1.5-2: the jump is the
+leak, the slope before it is legitimate information that ages. With the prior targets the
+retrained control scores **0.6349** (0.7495 before the cut). It still beats every language
+model, by 0.20-0.25 instead of 0.32-0.36, and `support` and the SHAP ranking follow it.
+
+The language models stay on view 4 and their runs remain valid, because they do not exploit
+that sample. On the 567 `test` windows that only the t0 sample makes answerable (the uncut
+tree gets them right, the cut one does not), the 50 stored language-model runs average 0.190,
+against 0.237 on the windows both trees miss. The largest gap of any of them is +0.042,
+against +0.35 for `support` before the cut, which answered with the uncut tree.

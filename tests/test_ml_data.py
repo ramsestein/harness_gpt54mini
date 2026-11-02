@@ -6,7 +6,7 @@ import pytest
 
 from harness.few_shot import retrieval
 from src import dataset
-from src.control import ml_data
+from src.control import control_view, ml_data
 
 
 @pytest.fixture(scope="module")
@@ -20,16 +20,21 @@ def tiny_index(tmp_path_factory):
 
 def test_the_feature_names_come_from_the_index_cache(tiny_index):
     names = ml_data.feature_names(tiny_index)
+    k = len(control_view.PRIOR_TARGET_NAMES)
 
-    assert names == retrieval.SimilarityIndex.load(tiny_index).names
+    # the index's own names, then the explicit prior targets of the control view
+    assert names[:-k] == retrieval.SimilarityIndex.load(tiny_index).names
+    assert tuple(names[-k:]) == control_view.PRIOR_TARGET_NAMES
     assert len(names) > 10
 
 
 def test_the_feature_names_fall_back_to_a_corpus_sample(tmp_path):
     names = ml_data.feature_names(tmp_path / "no-index-here.npz")
+    k = len(control_view.PRIOR_TARGET_NAMES)
 
     assert names
-    assert names == sorted(names)
+    assert names[:-k] == sorted(names[:-k])
+    assert tuple(names[-k:]) == control_view.PRIOR_TARGET_NAMES
 
 
 def test_the_matrix_is_nan_where_the_window_has_nothing():

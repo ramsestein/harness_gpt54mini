@@ -29,8 +29,8 @@ control's own accuracy, which is the number the deferral has to beat.
 
 The failure predictor is the one from `src/control/failure_model.py`: a classifier trained on
 out-of-fold failures of this very control, which reads the window's own variables. Measured on
-`test`, it ranks the control's failures with AUC 0.7675, while the control's own confidence
-reaches 0.8445 — so `confidence` is the stronger risk signal, and `failure` is kept because it
+`test`, it ranks the control's failures with AUC 0.6751, while the control's own confidence
+reaches 0.7183 — so `confidence` is the stronger risk signal, and `failure` is kept because it
 is the direct reading of the question "where will the tree model be wrong?".
 
 ## Where the fallback comes from
@@ -65,7 +65,7 @@ python harness/run.py --strategy support --split test --samples 60 --workers 8
 
 ## What to expect
 
-The control answers ~0.815 of `test` and the stored `zero_shot` answers between 0.247 and 0.295
+The control answers ~0.635 of `test` and the stored `zero_shot` answers between 0.247 and 0.295
 depending on their effort, so handing windows over to the language model **lowers** the overall
 accuracy: the mixture is a weighted average of the two, and the windows the control is least
 sure about are still answered better by the control than by the prompt. The value of the table

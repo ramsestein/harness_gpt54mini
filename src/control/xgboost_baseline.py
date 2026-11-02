@@ -21,7 +21,7 @@ from pathlib import Path
 import numpy as np
 
 from src import config, dataset, view
-from src.control import ml_data
+from src.control import control_view, ml_data
 from src.control.baselines import ControlStrategy
 from src.harness_base import Prediction
 
@@ -140,7 +140,8 @@ def train(names=None, model_path=None, meta_path=None, limit=None, cases=None, p
     classifier.save_model(model_path)
     meta_path.write_text(
         json.dumps({**metrics, "names": names, "split": ml_data.FIT_SPLIT,
-                    "view_version": view.VIEW_VERSION}, indent=2) + "\n",
+                    "view_version": view.VIEW_VERSION, **control_view.describe()},
+                   indent=2) + "\n",
         encoding="utf-8",
     )
     return metrics
@@ -168,6 +169,13 @@ def check_view(meta, path):
     """Refuse a model fitted on another view of the window (stale features)."""
     names = meta.get("names") or []
     hidden = view.hidden_in(names)
+    if meta.get("control_view_version") != control_view.CONTROL_VIEW_VERSION:
+        raise ValueError(
+            f"{path} was fitted on control view {meta.get('control_view_version')!r}, not "
+            f"{control_view.CONTROL_VIEW_VERSION} (effect-site features up to "
+            f"{control_view.CE_CUT_SEC} s + prior targets): retrain it "
+            "('python -m src.control.train_xgboost')"
+        )
     if meta.get("view_version") != view.VIEW_VERSION or hidden:
         raise ValueError(
             f"{path} was fitted on view {meta.get('view_version')!r}, not the current shared "
@@ -228,5 +236,7 @@ class XGBoostStrategy(ControlStrategy):
                     for index, action in enumerate(dataset.ACTIONS)
                 },
                 "n_features": len(names),
+                "control_view_version": control_view.CONTROL_VIEW_VERSION,
+                "ce_cut_sec": control_view.CE_CUT_SEC,
             },
         )

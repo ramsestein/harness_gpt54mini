@@ -221,5 +221,11 @@ def test_a_model_fitted_on_another_view_is_refused(tmp_path):
     with pytest.raises(ValueError, match="view"):
         xgboost_baseline.check_view({"names": ["ce_remi", "surgery_pct"], "view_version": None},
                                     tmp_path / "old.json")
-    xgboost_baseline.check_view({"names": ["ce_remi"], "view_version": view.VIEW_VERSION},
-                                tmp_path / "new.json")
+    from src.control import control_view
+
+    current = {"names": ["ce_remi"], "view_version": view.VIEW_VERSION, **control_view.describe()}
+    xgboost_baseline.check_view(current, tmp_path / "new.json")
+    # a model fitted before the effect-site cut (no control view recorded) is refused too
+    with pytest.raises(ValueError, match="control view"):
+        xgboost_baseline.check_view({"names": ["ce_remi"], "view_version": view.VIEW_VERSION},
+                                    tmp_path / "pre_cut.json")

@@ -9,6 +9,10 @@ tree model here and the retrieval controls are comparable feature for feature.
 
 Missing values stay ``NaN``: XGBoost handles them natively, and imputing them would invent
 information the model does not have.
+
+On top of the shared view, the controls read the *control view* (``src.control.control_view``):
+the effect-site features recomputed without the Ce samples after ``CE_CUT_SEC`` (the t0 sample
+already moves with a remifentanil action) and the explicit pre-decision pump targets.
 """
 
 from __future__ import annotations
@@ -19,6 +23,7 @@ import numpy as np
 
 from harness.few_shot import retrieval
 from src import dataset, view
+from src.control import control_view
 
 __all__ = [
     "FIT_SPLIT",
@@ -56,18 +61,32 @@ def feature_names(index_path=None):
             names = None
     if names is None:
         names = retrieval.feature_names(list(retrieval.train_windows(cases=20)))
-    return [name for name in names if not view.is_hidden(name)]
+    names = [name for name in names if not view.is_hidden(name)]
+    return names + [name for name in control_view.PRIOR_TARGET_NAMES if name not in names]
+
+
+def _values(window):
+    """The fields one window offers the controls: the shared view plus the control view.
+
+    The control view overrides the effect-site features (recomputed up to the cut) and adds the
+    prior targets; a window without ``raw_input`` (a hand-built test double) keeps its input.
+    """
+    inp = window.input
+    if getattr(window, "raw_input", None) is None:
+        return inp
+    return {**inp, **control_view.control_features(window)}
+
+
+def _row(window, names):
+    values = _values(window)
+    return [values.get(name) if retrieval.is_feature(values.get(name)) else np.nan
+            for name in names]
 
 
 def matrix(windows, names):
     """The feature matrix of an iterable of windows: float32, ``NaN`` where nothing is there."""
     names = list(names)
-    rows = []
-    for window in windows:
-        inp = window.input
-        rows.append(
-            [inp.get(name) if retrieval.is_feature(inp.get(name)) else np.nan for name in names]
-        )
+    rows = [_row(window, names) for window in windows]
     return np.asarray(rows, dtype=np.float32).reshape(len(rows), len(names))
 
 
@@ -97,10 +116,7 @@ def load_split(split, names=None, cases=None, limit=None):
     targets = []
     ids = []
     for window in windows:
-        inp = window.input
-        rows.append(
-            [inp.get(name) if retrieval.is_feature(inp.get(name)) else np.nan for name in names]
-        )
+        rows.append(_row(window, names))
         targets.append(ACTION_INDEX[window.real_action])
         ids.append(window.window_id)
     return (
