@@ -21,6 +21,7 @@ EXPECTED = [
     "support",
     "rag",
     "shap_prompt",
+    "zero_shot_ce_cut",
 ]
 
 

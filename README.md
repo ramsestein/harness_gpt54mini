@@ -241,8 +241,9 @@ Every number comes from the runs under `results_harness/` (not committed), summa
 View 4 keeps the effect-site concentration (Ce) at the decision point. Near the decision the
 Ce series is sampled every 30 s, and for remifentanil the decision point falls at or just
 after the pump's target change, so the t0 sample (and every Ce feature computed with it:
-current value, slopes, deltas, trend code) already moves with the action. The dataset side is
-documented in the AnesLLM dataset's `docs/audit_report.md` §3.1.
+current value, slopes, deltas, trend code) already moves with the action: it records the
+decision, not the state the decision was taken in. The dataset side is documented in the
+AnesLLM dataset's `docs/audit_report.md` §3.1.
 
 The tree-based controls (XGBoost, `support`, the failure predictor, the SHAP ranking behind
 `shap_prompt`) therefore read a **control view** on top of the shared one
@@ -269,11 +270,45 @@ targets):
 
 Dropping the t0 sample costs 11 points and every further 30 s only 1.5-2: the jump is the
 leak, the slope before it is legitimate information that ages. With the prior targets the
-retrained control scores **0.6349** (0.7495 before the cut). It still beats every language
-model, by 0.20-0.25 instead of 0.32-0.36, and `support` and the SHAP ranking follow it.
+retrained control scores **0.6349** (0.7495 with the t0 sample). It still beats every language
+model, by 0.20-0.25 (0.32-0.36 with the t0 sample), and `support` and the SHAP ranking follow
+it.
 
-The language models stay on view 4 and their runs remain valid, because they do not exploit
-that sample. On the 567 `test` windows that only the t0 sample makes answerable (the uncut
-tree gets them right, the cut one does not), the 50 stored language-model runs average 0.190,
-against 0.237 on the windows both trees miss. The largest gap of any of them is +0.042,
-against +0.35 for `support` before the cut, which answered with the uncut tree.
+### The language models do not exploit it
+
+The language models stay on view 4, t0 sample included, so they keep information the tree
+controls are denied. The asymmetry favours them: the 0.20-0.25 gap is measured with the tree
+at a disadvantage. Their runs stay valid because they do not turn that sample into correct
+answers, which `test` shows three ways.
+
+**Ablation.** `zero_shot_ce_cut` (`harness/zero_shot_ce_cut/`) is `zero_shot` with every
+effect-site field of the prompt cut at -30 s, as in the control view. Against the `zero_shot`
+run of the same model and effort (paired, case-clustered bootstrap):
+
+| model | effort | `zero_shot` | cut at -30 s | difference (95% CI) |
+|---|---|---|---|---|
+| `gpt-5.4-mini` | none | 0.2760 | 0.2826 | +0.007 [-0.004, +0.018] |
+| `gpt-5.4-mini` | high | 0.2496 | 0.2525 | +0.003 [-0.007, +0.012] |
+| `deepseek-flash` | none | 0.2742 | 0.2713 | -0.003 [-0.016, +0.010] |
+| `deepseek-flash` | high | 0.2800 | 0.2670 | -0.013 [-0.024, -0.001] |
+
+**The jump.** Where the remifentanil Ce at t0 sits at least 0.1 above the last sample at
+t <= -30 s, 63% of the 142 windows are `increase_opioid`; where it sits at least 0.1 below,
+64% of the 434 windows are `reduce_opioid`; in the 2844 windows without such a jump both are
+22%. A model exploiting the jump would choose that action there. Share of the windows where
+each run does, with the t0 sample (`zero_shot`) / without it (`zero_shot_ce_cut`):
+
+| windows | label | `gpt-5.4-mini` none | high | `deepseek-flash` none | high |
+|---|---|---|---|---|---|
+| jump up (142) | 63% `increase_opioid` | 6% / 10% | 13% / 15% | 8% / 9% | 12% / 6% |
+| jump down (434) | 64% `reduce_opioid` | 22% / 22% | 5% / 6% | 9% / 8% | 8% / 7% |
+
+**Every stored run.** On the 567 `test` windows that only the t0 sample makes answerable (the
+uncut tree gets them right, the cut one does not), the 50 stored language-model runs average
+0.190, against 0.237 on the windows both trees miss. The largest gap of any of them is +0.042,
+from a `few_shot` run, which like `rag` shows labelled cases in the prompt; `support` before
+the cut, which answered with the uncut tree, gained +0.35 there.
+
+The one exception is `deepseek-flash` at high effort, which after an upward jump chooses
+`increase_opioid` twice as often with the sample as without it: that is its -0.013. A learner
+fitted to the labels finds the shortcut; models that are not fitted to them do not.
