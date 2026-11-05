@@ -18,6 +18,7 @@ value at t0 (after the cut only the 30 s series is left), and its trend codes ag
 control view's rule on ~98.6 % of the training windows. Each prediction records
 `ce_cut_sec` and `control_view_version`.
 
-On `test` the cut moves accuracy by +0.007 and +0.003 for `gpt-5.4-mini` (none, high) and by
--0.003 and -0.013 for `deepseek-flash`, the last the only interval that excludes zero; the
-main README has the table, the intervals and what the models do after a jump of the Ce at t0.
+On `test` the cut moves accuracy by +0.007 and +0.003 for `gpt-5.4-mini` (none, high), by
+-0.003 and -0.013 for `deepseek-flash` and by -0.002 and -0.009 for `gemini-pro-latest`; the
+two high-effort losses are the only intervals that exclude zero. The main README has the
+table, the intervals and what the models do after a jump of the Ce at t0.
