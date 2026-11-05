@@ -268,7 +268,7 @@ targets):
 | -90 s | 0.595 |
 | -120 s | 0.548 |
 
-Dropping the t0 sample costs 11 points and every further 30 s only 1.5-2: the jump is the
+Dropping the t0 sample costs 11 points and every further 30 s 1.5-4.7: the jump is the
 leak, the slope before it is legitimate information that ages. With the prior targets the
 retrained control scores **0.6349** (0.7495 with the t0 sample). It still beats every language
 model, by 0.20-0.25 (0.32-0.36 with the t0 sample), and `support` and the SHAP ranking follow
@@ -291,10 +291,10 @@ run of the same model and effort (paired, case-clustered bootstrap):
 | `gpt-5.4-mini` | high | 0.2496 | 0.2525 | +0.003 [-0.007, +0.012] |
 | `deepseek-flash` | none | 0.2742 | 0.2713 | -0.003 [-0.016, +0.010] |
 | `deepseek-flash` | high | 0.2800 | 0.2670 | -0.013 [-0.024, -0.001] |
-| `gemini-pro-latest` | none | 0.2598 | 0.2575 | -0.002 [-0.011, +0.006] |
-| `gemini-pro-latest` | high | 0.2631 | 0.2544 | -0.009 [-0.018, -0.000] |
+| `gemini-pro-latest` | none | 0.2606 | 0.2583 | -0.002 [-0.011, +0.006] |
+| `gemini-pro-latest` | high | 0.2630 | 0.2546 | -0.008 [-0.018, 0.000] |
 
-The `gemini-pro-latest` rows are on the windows both runs scored (3433 and 3455 of 3457; the
+The `gemini-pro-latest` rows are on the windows both runs scored (3454 and 3456 of 3457; the
 rest failed at the API).
 
 **The jump.** Where the remifentanil Ce at t0 sits at least 0.1 above the last sample at
@@ -315,7 +315,8 @@ from a `few_shot` run, which like `rag` shows labelled cases in the prompt; `sup
 the cut, which answered with the uncut tree, gained +0.35 there.
 
 At high effort `deepseek-flash` and `gemini-pro-latest` lose a little without the sample
-(-0.013 and -0.009, intervals that just exclude zero). For `deepseek-flash` part of it is the
+(-0.013 and -0.008; the first interval just excludes zero, the second reaches it). For
+`deepseek-flash` part of it is the
 jump: after an upward jump it chooses `increase_opioid` twice as often with the sample as
 without it. `gemini-pro-latest` makes the same choices after a jump with and without it, and
 its loss is spread over the windows the cut changes (-0.014) and the rest (-0.007). Either
